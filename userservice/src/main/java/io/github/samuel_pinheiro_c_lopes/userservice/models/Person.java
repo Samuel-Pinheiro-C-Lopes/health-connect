@@ -1,7 +1,5 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.models;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

@@ -1,15 +1,15 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.configuration.security;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
-import io.github.samuel_pinheiro_c_lopes.userservice.repositories.UserRepository;
 import io.github.samuel_pinheiro_c_lopes.userservice.services.JWTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,12 +22,12 @@ public class SecurityFilter extends OncePerRequestFilter {
 	private final String AUTHORIZATION_PREFIX = "Bearer";
 	
 	private final JWTokenService jwtokenService;
-	private final UserRepository userRepository;
+	// private final UserRepository userRepository;
 	
 	@Autowired
-	public SecurityFilter(final JWTokenService jwtokenService, final UserRepository userRepository) {
+	public SecurityFilter(final JWTokenService jwtokenService /*, final UserRepository userRepository*/) {
 		this.jwtokenService = jwtokenService;
-		this.userRepository = userRepository;
+		// this.userRepository = userRepository;
 	}
 	
 	@Override
@@ -46,13 +46,17 @@ public class SecurityFilter extends OncePerRequestFilter {
 	
 	private void setContextAuthentication(final String token) {
 		final String username = jwtokenService.getSubject(token);
+		final List<SimpleGrantedAuthority> authorities = jwtokenService.getRoles(token)
+				.stream()
+				.map(r -> new SimpleGrantedAuthority(r))
+				.toList(); 
 		
-		final User user = this.userRepository.findUserByEmail(username);
+		// final User user = this.userRepository.findUserByEmail(username);
 		
 		final var authentication = new UsernamePasswordAuthenticationToken(
-				user, 
+				username, 
 				null, 
-				user.getAuthorities()
+				authorities
 		);
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);

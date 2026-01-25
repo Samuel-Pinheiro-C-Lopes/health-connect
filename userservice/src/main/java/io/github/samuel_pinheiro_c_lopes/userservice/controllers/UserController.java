@@ -45,7 +45,7 @@ public class UserController {
 	
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
-	public ResponseEntity<UserResponseDTO> delete(
+	public ResponseEntity<UserResponseDTO> update(
 			@PathVariable final Long id, 
 			@RequestBody final UserRequestDTO userRequest
 	) {

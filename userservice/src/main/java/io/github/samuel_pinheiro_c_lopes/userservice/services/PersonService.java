@@ -3,6 +3,7 @@ package io.github.samuel_pinheiro_c_lopes.userservice.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Person;
 import io.github.samuel_pinheiro_c_lopes.userservice.broker.dtos.PersonBindDTO;
@@ -12,6 +13,7 @@ import io.github.samuel_pinheiro_c_lopes.userservice.models.Address;
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.PersonRepository;
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.UserRepository;
 
+@Service
 public class PersonService {
 	private final PersonRepository personRepository;
 	private final UserRepository userRepository;
