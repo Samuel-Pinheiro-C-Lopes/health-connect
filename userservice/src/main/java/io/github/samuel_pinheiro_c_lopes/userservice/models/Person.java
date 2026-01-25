@@ -1,5 +1,7 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.models;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -19,12 +21,44 @@ public class Person {
 	private String phone;
 	@OneToOne(optional = false)
 	private User user;
-	@Column(name = "doctor_id")
+	@Column(name = "doctor_id", nullable = true)
     private Long doctorId;
-	@Column(name = "patient_id")
+	@Column(name = "patient_id", nullable = true)
     private Long patientId;
 	@Embedded
 	private Address address;
+	
+	public Person() {
+		super();
+	}
+
+	public Person(
+			String name,
+			String phone,
+			Long userId,
+			String city,
+			String district,
+			String state,
+			String postalCode,
+			String avenue,
+			String number,
+			String complement
+	) {
+		this();
+		this.name = name;
+		this.phone = phone;
+		this.user = new User(userId);
+		this.address = new Address(
+				postalCode, 
+				avenue, 
+				complement, 
+				number, 
+				city, 
+				district, 
+				state
+		);
+	}
+	
 	public Long getId() {
 		return id;
 	}

@@ -1,4 +1,4 @@
-package io.github.samuel_pinheiro_c_lopes.userservice.dtos;
+package io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos;
 
 import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
 

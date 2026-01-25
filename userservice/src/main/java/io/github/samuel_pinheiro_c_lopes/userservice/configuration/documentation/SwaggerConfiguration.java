@@ -1,4 +1,4 @@
-package io.github.samuel_pinheiro_c_lopes.userservice.documentation;
+package io.github.samuel_pinheiro_c_lopes.userservice.configuration.documentation;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

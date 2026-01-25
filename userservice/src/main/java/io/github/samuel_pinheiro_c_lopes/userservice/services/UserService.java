@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import io.github.samuel_pinheiro_c_lopes.userservice.dtos.UserRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.dtos.UserResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Role;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.PersonRepository;

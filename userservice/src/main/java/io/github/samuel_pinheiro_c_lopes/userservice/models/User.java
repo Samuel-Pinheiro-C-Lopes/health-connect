@@ -32,8 +32,12 @@ public class User implements UserDetails {
 	public User() {
 		super();
 	}
+	
+	public User(final Long id) {
+		this.id = id;
+	}
 
-	public User(List<Role> roles, String email, String password) {
+	public User(final List<Role> roles, final String email, final String password) {
 		super();
 		this.roles = roles;
 		this.email = email;

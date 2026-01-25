@@ -1,4 +1,4 @@
-package io.github.samuel_pinheiro_c_lopes.userservice.security;
+package io.github.samuel_pinheiro_c_lopes.userservice.configuration.security;
 
 import java.io.IOException;
 
