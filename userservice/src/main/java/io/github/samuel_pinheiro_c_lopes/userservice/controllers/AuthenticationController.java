@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.samuel_pinheiro_c_lopes.spring_common.security.services.JWTService;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
-import io.github.samuel_pinheiro_c_lopes.userservice.services.JWTokenService;
 
 @RestController
 @RequestMapping("/authentication")
 public class AuthenticationController {
 	private final AuthenticationManager authenticationManager;
-	private final JWTokenService jwtokenService;
+	private final JWTService jwtokenService;
 	
-	public AuthenticationController(final AuthenticationManager authenticationManager, final JWTokenService jwtokenService) {
+	public AuthenticationController(final AuthenticationManager authenticationManager, final JWTService jwtokenService) {
 		this.authenticationManager = authenticationManager;
 		this.jwtokenService = jwtokenService;
 	}

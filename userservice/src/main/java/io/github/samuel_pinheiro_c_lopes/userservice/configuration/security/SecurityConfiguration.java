@@ -15,18 +15,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import io.github.samuel_pinheiro_c_lopes.spring_common.security.filters.JWTAuthenticationFilter;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
 	
-	private final SecurityFilter securityFilter;
+	private final JWTAuthenticationFilter jwtAuthenticationToken;
 	
 	@Autowired
-	public SecurityConfiguration(final SecurityFilter securityFilter) {
-		this.securityFilter = securityFilter;
+	public SecurityConfiguration(final JWTAuthenticationFilter jwtAuthenticationToken) {
+		this.jwtAuthenticationToken = jwtAuthenticationToken;
 	}
-	
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -38,7 +39,7 @@ public class SecurityConfiguration {
 					req.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
 					req.anyRequest().authenticated();
 				})
-				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(jwtAuthenticationToken, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
 	

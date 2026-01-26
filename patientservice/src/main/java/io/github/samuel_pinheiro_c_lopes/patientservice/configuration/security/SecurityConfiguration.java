@@ -10,15 +10,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import io.github.samuel_pinheiro_c_lopes.spring_common.security.filters.JWTAuthenticationFilter;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
 	
-	private final SecurityFilter securityFilter;
+	private final JWTAuthenticationFilter securityFilter;
 	
 	@Autowired
-	public SecurityConfiguration(final SecurityFilter securityFilter) {
+	public SecurityConfiguration(final JWTAuthenticationFilter securityFilter) {
 		this.securityFilter = securityFilter;
 	}
 	

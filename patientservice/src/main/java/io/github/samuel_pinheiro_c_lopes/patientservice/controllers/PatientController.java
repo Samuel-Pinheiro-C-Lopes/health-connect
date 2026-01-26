@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.samuel_pinheiro_c_lopes.patientservice.controllers.dtos.PatientRequestDTO;
@@ -19,6 +20,7 @@ import io.github.samuel_pinheiro_c_lopes.patientservice.services.PatientService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
+@RequestMapping("/patient")
 public class PatientController {
 	private final PatientService patientService;
 	
