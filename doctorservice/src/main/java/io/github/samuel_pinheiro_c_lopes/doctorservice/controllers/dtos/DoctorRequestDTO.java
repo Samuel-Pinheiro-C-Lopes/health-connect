@@ -1,5 +1,6 @@
 package io.github.samuel_pinheiro_c_lopes.doctorservice.controllers.dtos;
 
+import io.github.samuel_pinheiro_c_lopes.doctorservice.enums.RegisterRequestStatus;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.enums.Specialty;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.models.Doctor;
 import jakarta.validation.constraints.NotBlank;
@@ -8,9 +9,10 @@ import jakarta.validation.constraints.NotNull;
 public record DoctorRequestDTO(
 		@NotNull Long personId,
 		@NotBlank String crm,
-		Specialty specialty
+		Specialty specialty,
+		RegisterRequestStatus registerRequestStatus
 ) {
 	public Doctor toDoctor() {
-		return new Doctor(personId, crm, specialty);
+		return new Doctor(personId, crm, specialty, registerRequestStatus);
 	}
 }
