@@ -2,6 +2,7 @@ import loginImage from '../../assets/images/login_image.png';
 import healthConnectLogo from '../../assets/images/health_connect_logo.png';
 import "./styles.css";
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 
 function Login() { 
@@ -44,7 +45,7 @@ function Login() {
                         Entrar
                     </button>
                     <div className="redirect-container">
-                        <p className="text">Não tem uma conta? <a href="">Cadastre-se como paciente.</a></p>
+                        <p className="text">Não tem uma conta? <Link to='/cadastrar-paciente'>Cadastre-se como paciente.</Link></p>
                         <p className="text">É um médico? <a href="">Solicite seu cadastro.</a></p>
                     </div>
                 </form>
