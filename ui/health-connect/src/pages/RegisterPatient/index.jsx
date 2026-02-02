@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import imageRegisterPatient from "../../assets/images/image_register_patient.png";
-import "./styles.css";
 import { useState } from "react";
 import { validateCPF } from "../../utils/validations";
 import ErrorModal from "../../components/ErrorModal";
@@ -43,24 +42,24 @@ function RegisterPatient(){
     }
 
     return(
-        <section className="register-patient">
-            <img src={imageRegisterPatient} alt="logo" className="register-patient-image"/>
-            <div className="register-patient-content">
+        <section className="page-split-container">
+            <img src={imageRegisterPatient} alt="logo" className="page-split-image"/>
+            <div className="page-split-content scrollable custom-scrollbar">
                 <img src="health_connect_logo.png" alt="logo"/> 
-                <div className="register-patient-content-text">
-                    <h1 className="title">Crie sua conta de Paciente</h1>
+                <div className="page-split-content-text">
+                    <h1 className="page-title">Crie sua conta de Paciente</h1>
                 </div>
-                <form className="form-register-patient" >
-                    <div>
-                        <label htmlFor="cpf">CPF</label>
+                <form className="form-container" >
+                    <div className="form-field">
+                        <label htmlFor="cpf" className="form-label">CPF</label>
                         <input type="text" 
                                 name="cpf"
                                 required
                                 value={cpf}
                                 onChange={handleCpfChange}
-                                className={cpfError || showErrors ? 'error' : ''}
+                                className={`form-input ${cpfError || showErrors ? 'error' : ''}`}
                                 placeholder="Somente números"/>
-                        {cpfError && <span className="error-message">CPF inválido</span>}
+                        {cpfError && <span className="form-error-message">CPF inválido</span>}
                     </div>
                     <ErrorModal 
                         isOpen={showErrors}
@@ -70,11 +69,12 @@ function RegisterPatient(){
                     <button
                         type="submit"
                         onClick={handleSubmit}
+                        className="btn-primary"
                     >
                         Criar Conta
                     </button>
                     <div className="redirect-container">
-                        <p className="text">Já tem uma conta? <Link to='/'>Faça login</Link></p>
+                        <p className="page-text">Já tem uma conta? <Link to='/'>Faça login</Link></p>
                     </div>
                 </form>   
             </div>

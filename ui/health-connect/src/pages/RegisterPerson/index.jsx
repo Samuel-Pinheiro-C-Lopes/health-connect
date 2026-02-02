@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import imageRegisterPerson from "../../assets/images/image_register_person.png";
-import "./styles.css";
 import { useState } from "react";
 import { validateEmail } from "../../utils/validations";
 import ErrorModal from "../../components/ErrorModal";
@@ -132,103 +131,104 @@ function RegisterPerson(){
     }
 
     return(
-        <section className="register-person">
-            <img src={imageRegisterPerson} alt="logo" className="register-person-image"/>
-            <div className="register-person-content">
+        <section className="page-split-container">
+            <img src={imageRegisterPerson} alt="logo" className="page-split-image"/>
+            <div className="page-split-content scrollable custom-scrollbar">
                 <img src="health_connect_logo.png" alt="logo"/> 
-                <div className="register-person-content-text">
-                    <h1 className="title">Crie sua conta</h1>
+                <div className="page-split-content-text">
+                    <h1 className="page-title">Crie sua conta</h1>
                 </div>
-                <form className="form-register-person" >
-                    <div>
-                        <label htmlFor="nome">Nome Completo</label>
+                <form className="form-container" >
+                    <div className="form-field">
+                        <label htmlFor="nome" className="form-label">Nome Completo</label>
                         <input type="text" 
                                 name="nome"
                                 required
                                 value={formData.nome}
                                 onChange={handleChange}
-                                className={showErrors && !formDataValid.nome ? 'error' : ''}/>
+                                className={`form-input ${showErrors && !formDataValid.nome ? 'error' : ''}`}/>
                     </div>
-                    <div>
-                        <label htmlFor="email">Email</label>
+                    <div className="form-field">
+                        <label htmlFor="email" className="form-label">Email</label>
                         <input type="email" 
                                 name="email"
                                 required
                                 value={formData.email}
                                 onChange={handleChange}
-                                className={emailError || (showErrors && !formDataValid.email) ? 'error' : ''}/>
-                        {emailError && <span className="error-message">Email inválido</span>}
+                                className={`form-input ${emailError || (showErrors && !formDataValid.email) ? 'error' : ''}`}/>
+                        {emailError && <span className="form-error-message">Email inválido</span>}
                     </div>
-                    <div>
-                        <label htmlFor="telefone">Telefone</label>
+                    <div className="form-field">
+                        <label htmlFor="telefone" className="form-label">Telefone</label>
                         <input type="tel" 
                                 name="telefone"
                                 required
                                 value={formData.telefone}
                                 onChange={handleChange}
                                 placeholder="(00) 00000-0000"
-                                className={showErrors && !formDataValid.telefone ? 'error' : ''}/>
+                                className={`form-input ${showErrors && !formDataValid.telefone ? 'error' : ''}`}/>
                     </div>
-                    <div>
-                        <label htmlFor="cep">CEP</label>
+                    <div className="form-field">
+                        <label htmlFor="cep" className="form-label">CEP</label>
                         <input type="text" 
                                 name="cep"
                                 required
                                 value={formData.cep}
                                 onChange={handleChange}
                                 placeholder="00000-000"
-                                className={showErrors && !formDataValid.cep ? 'error' : ''}/>
+                                className={`form-input ${showErrors && !formDataValid.cep ? 'error' : ''}`}/>
                     </div>
-                    <div>
-                        <label htmlFor="logradouro">Logradouro</label>
+                    <div className="form-field">
+                        <label htmlFor="logradouro" className="form-label">Logradouro</label>
                         <input type="text" 
                                 name="logradouro"
                                 required
                                 value={formData.logradouro}
                                 onChange={handleChange}
                                 placeholder="Rua, Avenida, etc."
-                                className={showErrors && !formDataValid.logradouro ? 'error' : ''}/>
+                                className={`form-input ${showErrors && !formDataValid.logradouro ? 'error' : ''}`}/>
                     </div>
                     <div className="row-fields">
-                        <div>
-                            <label htmlFor="numeroEndereco">Número</label>
+                        <div className="form-field">
+                            <label htmlFor="numeroEndereco" className="form-label">Número</label>
                             <input type="text" 
                                     name="numeroEndereco"
                                     required
                                     value={formData.numeroEndereco}
                                     onChange={handleChange}
-                                    className={showErrors && !formDataValid.numeroEndereco ? 'error' : ''}/>
+                                    className={`form-input ${showErrors && !formDataValid.numeroEndereco ? 'error' : ''}`}/>
                         </div>
-                        <div>
-                            <label htmlFor="complemento">Complemento</label>
+                        <div className="form-field">
+                            <label htmlFor="complemento" className="form-label">Complemento</label>
                             <input type="text" 
                                     name="complemento"
                                     value={formData.complemento}
                                     onChange={handleChange}
-                                    placeholder="Apto, Bloco, etc. (opcional)"/>
+                                    placeholder="Apto, Bloco, etc. (opcional)"
+                                    className="form-input"/>
                         </div>
                     </div>
                     <div className="row-fields-three">
-                        <div>
-                            <label htmlFor="bairro">Bairro</label>
+                        <div className="form-field">
+                            <label htmlFor="bairro" className="form-label">Bairro</label>
                             <input type="text" 
                                     name="bairro"
                                     required
                                     value={formData.bairro}
                                     onChange={handleChange}
-                                    className={showErrors && !formDataValid.bairro ? 'error' : ''}/>
+                                    className={`form-input ${showErrors && !formDataValid.bairro ? 'error' : ''}`}/>
                         </div>
-                        <div>
-                            <label htmlFor="cidade">Cidade</label>
+                        <div className="form-field">
+                            <label htmlFor="cidade" className="form-label">Cidade</label>
                             <input type="text" 
                                     name="cidade"
                                     required
                                     value={formData.cidade}
                                     onChange={handleChange}
-                                    className={showErrors && !formDataValid.cidade ? 'error' : ''}/>
+                                    className={`form-input ${showErrors && !formDataValid.cidade ? 'error' : ''}`}/>
                         </div>
-                        <div>
-                            <label htmlFor="uf">UF</label>
+                        <div className="form-field">
+                            <label htmlFor="uf" className="form-label">UF</label>
                             <input type="text" 
                                     name="uf"
                                     required
@@ -237,28 +237,28 @@ function RegisterPerson(){
                                     onChange={handleChange}
                                     placeholder="SP"
                                     style={{textTransform: 'uppercase'}}
-                                    className={showErrors && !formDataValid.uf ? 'error' : ''}/>
+                                    className={`form-input ${showErrors && !formDataValid.uf ? 'error' : ''}`}/>
                         </div>
                     </div>
-                    <div>
-                        <label htmlFor="senha">Senha</label>
+                    <div className="form-field">
+                        <label htmlFor="senha" className="form-label">Senha</label>
                         <input type="password"
                                 name="senha"
                                 required
                                 value={formData.senha}
                                 onChange={handleChange}
-                                className={showErrors && !formDataValid.senha ? 'error' : ''}/>
+                                className={`form-input ${showErrors && !formDataValid.senha ? 'error' : ''}`}/>
                     </div>
-                    <div>
-                        <label htmlFor="confirmarSenha">Confirmar Senha</label>
+                    <div className="form-field">
+                        <label htmlFor="confirmarSenha" className="form-label">Confirmar Senha</label>
                         <input type="password"
                                 name="confirmarSenha"
                                 required
                                 value={formData.confirmarSenha}
                                 onChange={handleChange}
-                                className={showErrors && !formDataValid.confirmarSenha ? 'error' : ''}/>
+                                className={`form-input ${showErrors && !formDataValid.confirmarSenha ? 'error' : ''}`}/>
                         {showErrors && !formDataValid.confirmarSenha && formData.senha !== formData.confirmarSenha && (
-                            <span className="error-message">As senhas não coincidem</span>
+                            <span className="form-error-message">As senhas não coincidem</span>
                         )}
                     </div>
                     <ErrorModal 
@@ -269,11 +269,12 @@ function RegisterPerson(){
                     <button
                         type="submit"
                         onClick={handleSubmit}
+                        className="btn-primary"
                     >
                         Criar Conta
                     </button>
                     <div className="redirect-container">
-                        <p className="text">Já tem uma conta? <Link to='/'>Faça login</Link></p>
+                        <p className="page-text">Já tem uma conta? <Link to='/'>Faça login</Link></p>
                     </div>
                 </form>   
             </div>

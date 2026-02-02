@@ -19,18 +19,23 @@ function CheckEmail() {
     };
 
     return (
-        <section className="check-email-container">
-            <form onSubmit={handleCheckEmail}>
-                <label>Informe seu e-mail para começar:</label>
-                <input 
-                    type="email" 
-                    required
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    placeholder="exemplo@email.com"
-                />
-                <button type="submit">Continuar</button>
-            </form>
+        <section className="page-split-container">
+            <div className="page-split-content">
+                <form className="form-container" onSubmit={handleCheckEmail}>
+                    <div className="form-field">
+                        <label className="form-label">Informe seu e-mail para começar:</label>
+                        <input 
+                            type="email" 
+                            required
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)} 
+                            placeholder="exemplo@email.com"
+                            className="form-input"
+                        />
+                    </div>
+                    <button type="submit" className="btn-primary">Continuar</button>
+                </form>
+            </div>
         </section>
     );
 }
