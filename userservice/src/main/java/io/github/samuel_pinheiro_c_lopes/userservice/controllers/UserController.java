@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRolesRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.services.UserService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
@@ -36,7 +37,7 @@ public class UserController {
 	}
 	
 	@PostMapping
-	@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+	//@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
 	public ResponseEntity<UserResponseDTO> save(
 			@RequestBody final UserRequestDTO userRequest
 	) {
@@ -44,12 +45,22 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+	//@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
 	public ResponseEntity<UserResponseDTO> update(
 			@PathVariable final Long id, 
 			@RequestBody final UserRequestDTO userRequest
 	) {
 		return ResponseEntity.ok(this.userService.update(id, userRequest));
+	}
+	
+	@PutMapping("/{id}/roles")
+	@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+	public ResponseEntity<UserResponseDTO> grantRoles(
+			@PathVariable final Long id,
+			@RequestBody final UserRolesRequestDTO userRolesRequest
+	) {
+		return ResponseEntity.ok(this.userService.grantRoles(id, userRolesRequest));
+		
 	}
 	
 	@DeleteMapping("/{id}")

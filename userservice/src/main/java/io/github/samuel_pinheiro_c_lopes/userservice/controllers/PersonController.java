@@ -37,7 +37,7 @@ public class PersonController {
 		}
 		
 		@PostMapping
-		@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+		//@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
 		public ResponseEntity<PersonResponseDTO> save(
 				@RequestBody final PersonRequestDTO userRequest
 		) {
@@ -45,8 +45,8 @@ public class PersonController {
 		}
 		
 		@PutMapping("/{id}")
-		@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
-		public ResponseEntity<PersonResponseDTO> delete(
+		//@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+		public ResponseEntity<PersonResponseDTO> update(
 				@PathVariable final Long id, 
 				@RequestBody final PersonRequestDTO userRequest
 		) {

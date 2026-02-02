@@ -33,7 +33,6 @@ public class Person {
 	public Person(
 			String name,
 			String phone,
-			Long userId,
 			String city,
 			String district,
 			String state,
@@ -45,7 +44,6 @@ public class Person {
 		this();
 		this.name = name;
 		this.phone = phone;
-		this.user = new User(userId);
 		this.address = new Address(
 				postalCode, 
 				avenue, 

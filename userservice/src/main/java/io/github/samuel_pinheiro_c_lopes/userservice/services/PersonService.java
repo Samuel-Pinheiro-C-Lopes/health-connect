@@ -3,9 +3,12 @@ package io.github.samuel_pinheiro_c_lopes.userservice.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Person;
+import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
 import io.github.samuel_pinheiro_c_lopes.userservice.broker.dtos.PersonBindDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.PersonRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.PersonResponseDTO;
@@ -25,8 +28,15 @@ public class PersonService {
 	}
 	
 	public PersonResponseDTO save(final PersonRequestDTO personRequest) {
+		// gets model
 		final Person person = personRequest.toPerson();
 		
+		// finds authenticated user
+		final String userEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		final User user = this.userRepository.findUserByEmail(userEmail);
+		person.setUser(user);
+		
+		// persists
 		return new PersonResponseDTO(this.personRepository.save(person));
 	}
 	

@@ -1,13 +1,17 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.services;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.RoleResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRolesRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Role;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.PersonRepository;
@@ -44,11 +48,6 @@ public class UserService {
 		
 		toBeUpdatedUser.setEmail(userRequest.email());
 		toBeUpdatedUser.setPassword(userRequest.password());
-		toBeUpdatedUser.setRoles(userRequest.roles()
-				.stream()
-				.map(r -> new Role(r))
-				.toList()
-		);
 		toBeUpdatedUser.setPerson(personRepository.getReferenceById(id));
 		
 		return new UserResponseDTO(this.userRepository.save(toBeUpdatedUser));
@@ -56,5 +55,21 @@ public class UserService {
 	
 	public void delete(final Long id) {
 		this.userRepository.delete(this.userRepository.getReferenceById(id));
+	}
+
+	public UserResponseDTO grantRoles(final Long userId, UserRolesRequestDTO userRolesRequest) {
+		final User toBeGrantedRolesUser = this.userRepository.getReferenceById(userId);
+		
+
+		final Set<Long> roles = toBeGrantedRolesUser.getRoles()
+				.stream()
+				.map(r -> r.getId())
+				.collect(Collectors.toSet());
+		
+		roles.addAll(userRolesRequest.roles());
+		
+		toBeGrantedRolesUser.setRoles(roles.stream().map(r -> new Role(r)).toList());
+		
+		return new UserResponseDTO(this.userRepository.save(toBeGrantedRolesUser));
 	}
 }

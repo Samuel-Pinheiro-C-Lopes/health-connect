@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class User implements UserDetails {
@@ -37,10 +38,14 @@ public class User implements UserDetails {
 		this.id = id;
 	}
 
-	public User(final List<Role> roles, final String email, final String password) {
+	public User(String email, String password) {
 		super();
-		this.roles = roles;
 		this.email = email;
+		this.password = password;
+	}
+	
+	public User(final List<Role> roles, final String email, final String password) {
+		this(email, password);
 		this.password = password;
 	}
 

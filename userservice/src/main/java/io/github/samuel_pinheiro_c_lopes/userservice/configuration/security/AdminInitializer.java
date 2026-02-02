@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.RoleRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRolesRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Role;
 import io.github.samuel_pinheiro_c_lopes.userservice.services.RoleService;
 import io.github.samuel_pinheiro_c_lopes.userservice.services.UserService;
@@ -54,11 +56,11 @@ public class AdminInitializer implements CommandLineRunner {
 	}
 	
 	private void saveAdminUser(final Role adminRole) {
-		this.userService.save(new UserRequestDTO(
+		final UserResponseDTO admin = this.userService.save(new UserRequestDTO(
 				this.adminUsername,
-				this.adminPassword,
-				List.of(adminRole.getId())
+				this.adminPassword
 		));
+		this.userService.grantRoles(admin.id(), new UserRolesRequestDTO(List.of(adminRole.getId())));
 	}
 	
 	private class AdminRoleNotFoundException extends Exception {

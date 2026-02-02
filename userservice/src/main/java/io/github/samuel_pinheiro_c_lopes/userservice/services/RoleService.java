@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.RoleRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.RoleResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Role;
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.RoleRepository;
 
@@ -27,6 +28,10 @@ public class RoleService {
 	) {
 		this.roleRepository = roleRepository;
 		this.availableRoles = Set.of(adminRole, doctorRole, patientRole, managerRole);
+	}
+	
+	public List<RoleResponseDTO> findAll() {
+		return this.roleRepository.findAll().stream().map(RoleResponseDTO::new).toList();
 	}
 	
 	public Role save(final RoleRequestDTO roleRequest) {

@@ -5,7 +5,6 @@ import io.github.samuel_pinheiro_c_lopes.userservice.models.Person;
 public record PersonRequestDTO(
 		String name,
 		String phone,
-		Long userId,
 		String postalCode, 
 		String avenue, 
 		String complement, 
@@ -18,7 +17,6 @@ public record PersonRequestDTO(
 		return new Person(
 				name(), 
 				phone(),
-				userId(),
 				city(),
 				district(),
 				state(),

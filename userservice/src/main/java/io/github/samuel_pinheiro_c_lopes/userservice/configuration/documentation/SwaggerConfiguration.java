@@ -9,7 +9,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
-@Configuration
+//@Configuration
 //@SecurityScheme(
 //	name = "bearer",
 //	type = SecuritySchemeType.HTTP,
@@ -19,6 +19,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 //)
 // @SecurityRequirement(name = "bearer")
 public class SwaggerConfiguration {
+	
 	@Bean
 	public OpenAPI openAPI() {
 		return new OpenAPI()
@@ -41,4 +42,5 @@ public class SwaggerConfiguration {
 	        .bearerFormat("JWT")
 	        .scheme("bearer");
 	}
+	
 }
