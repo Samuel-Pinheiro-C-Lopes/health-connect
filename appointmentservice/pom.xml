@@ -102,12 +102,6 @@
 		</dependency>
 		
 		<dependency>
-		    <groupId>io.github.samuel_pinheiro_c_lopes</groupId>
-		    <artifactId>spring_common</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
@@ -117,6 +111,11 @@
 		    <artifactId>spring_common</artifactId>
 		    <version>0.0.1-SNAPSHOT</version>
 		</dependency>
+				
+	    <dependency>
+	        <groupId>org.springframework.cloud</groupId>
+	        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+	    </dependency>
 	</dependencies>
 	
 	<dependencyManagement>

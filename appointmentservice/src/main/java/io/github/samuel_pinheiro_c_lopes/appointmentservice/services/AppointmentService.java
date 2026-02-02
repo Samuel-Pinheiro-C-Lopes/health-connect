@@ -3,7 +3,9 @@ package io.github.samuel_pinheiro_c_lopes.appointmentservice.services;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,95 +39,109 @@ public class AppointmentService {
 		this.patientClient = patientClient;
 	}
 	
-	// funcionamento da clínica é de 
-	// segunda a sábado
-	private Boolean validateAppointmentDayOfWeek(final Appointment appointment) {
-		return appointment.getDateTime().getDayOfWeek().getValue() != 7;
-	}
-	
-	// O horário de funcionamento da clínica é 
-	// das 07:00 às 19:00
-	private Boolean validateAppointmentHour(final Appointment appointment) {
-		return appointment.getDateTime().getHour() >= 7 && appointment.getDateTime().getHour() <= 19;
-	}
-	
-	// antecedência de 30 minutos 
-	private Boolean validateAppointmenteAdvance(final Appointment appointment) {
-		return Duration.between(LocalDateTime.now(), appointment.getDateTime()).toMinutes() > 30;
-	}
-	
-	// Não permitir o agendamento de mais de uma
-	// consulta no mesmo dia para um mesmo paciente
-	private Boolean validateAppointmentPerPatientAndDay(final Appointment appointment) {
-		return !this.appointmentRepository.existsByByDateTimeBetweenAndPatientId(
-				appointment.getDateTime().toLocalDate().atStartOfDay(), 
-				appointment.getDateTime().toLocalDate().atTime(LocalTime.MAX), 
-				appointment.getPatientId()
-		);
-	}
-	
+	// --- VALIDAÇÕES ---
 
-	// A escolha do médico é opcional, sendo que nesse 
-	// caso o sistema deve escolher aleatoriamente algum 
-	// médico disponível na data/hora preenchida.
-	private Long getRandomAvailableDoctorId(final LocalDateTime dateTime) {
-		final List<CommonDoctorResponseDTO> doctors = this.doctorClient.findAll();
-		
-		final Long chosenOneId = doctors
-				.stream()
-				.filter(d -> !this.appointmentRepository.existsByByDateTimeBetweenAndDoctorId(
-						dateTime.minusHours(1), 
-						dateTime, 
-						d.id())
-				)
-				.findFirst()
-				.map(d -> d.id())
-				.orElse(null);
-		
-		return chosenOneId;
-	}
-	
-	// verificações comuns ao save e update
-	private void verifyAndHandleAppointment(final Appointment appointment) {
-		if (!this.validateAppointmentDayOfWeek(appointment))
-			throw new IllegalArgumentException();
-		
-		if (!this.validateAppointmentHour(appointment))
-			throw new IllegalArgumentException();
-		
-		if (!this.validateAppointmenteAdvance(appointment))
-			throw new IllegalArgumentException();
-		
-		if (!this.validateAppointmentPerPatientAndDay(appointment))
-			throw new IllegalArgumentException();
-		
-		if (appointment.getDoctorId() == null) {
-			final Long doctorId = this.getRandomAvailableDoctorId(appointment.getDateTime());
-			
-			if (doctorId == null)
-				throw new IllegalArgumentException();
-			
-			appointment.setDoctorId(doctorId);
-		}
-	}
+    private void validateAppointmentDayOfWeek(final Appointment appointment) {
+        if (appointment.getDateTime().getDayOfWeek().getValue() == 7) {
+            throw new IllegalArgumentException("A clínica não abre aos domingos.");
+        }
+    }
+    
+    private void validateAppointmentHour(final Appointment appointment) {
+        if (appointment.getDateTime().getHour() < 7 || appointment.getDateTime().getHour() > 18) {
+            throw new IllegalArgumentException("Horário inválido (07:00 - 19:00).");
+        }
+    }
+    
+    private void validateAppointmentAdvance(final Appointment appointment) {
+        if (Duration.between(LocalDateTime.now(), appointment.getDateTime()).toMinutes() <= 30) {
+            throw new IllegalArgumentException("Agendamento deve ser feito com 30min de antecedência.");
+        }
+    }
+    
+    // CORREÇÃO LÓGICA: Recebe o ID para ignorar (caso seja update)
+    private void validatePerPatientAndDay(final Appointment appointment, Long currentAppointmentId) {
+        LocalDateTime start = appointment.getDateTime().toLocalDate().atStartOfDay();
+        LocalDateTime end = appointment.getDateTime().toLocalDate().atTime(LocalTime.MAX);
+        Long patientId = appointment.getPatientId();
+        boolean exists;
+
+        if (currentAppointmentId == null) 
+        	exists = this.appointmentRepository.existsByDateTimeBetweenAndPatientId(start, end, patientId);
+        else 
+        	exists = this.appointmentRepository.existsByDateTimeBetweenAndPatientIdAndIdNot(start, end, patientId, currentAppointmentId);
+        
+
+        if (exists) 
+            throw new IllegalArgumentException("Paciente já possui consulta neste dia.");
+    }
+    
+    private void validateChosenDoctor(final Long doctorId, final LocalDateTime dateTime) {
+        List<Long> busyIds = this.appointmentRepository.findBusyDoctorIds(dateTime);
+        if (busyIds.contains(doctorId)) 
+            throw new IllegalArgumentException("Médico indisponível neste horário.");
+        
+        boolean isActive = this.doctorClient.findAllActive().stream()
+                .anyMatch(d -> d.id().equals(doctorId));
+
+        if (!isActive) 
+            throw new IllegalArgumentException("Médico inválido ou inativo.");
+    }
+
+    private Long getRandomAvailableDoctorId(final LocalDateTime dateTime) {
+        List<Long> busyDoctorIds = this.appointmentRepository.findBusyDoctorIds(dateTime);
+        List<CommonDoctorResponseDTO> allActiveDoctors = this.doctorClient.findAllActive();
+
+        List<Long> availableDoctorIds = allActiveDoctors.stream()
+                .map(CommonDoctorResponseDTO::id)
+                .filter(id -> !busyDoctorIds.contains(id))
+                .collect(Collectors.toList());
+
+        if (availableDoctorIds.isEmpty()) 
+            throw new IllegalArgumentException("Não há médicos disponíveis neste horário.");
+        
+        Collections.shuffle(availableDoctorIds);
+        return availableDoctorIds.get(0);
+    }
+    
+    private void verifyAndFillAppointment(final Appointment appointment, Long currentId) {
+        this.validateAppointmentDayOfWeek(appointment);
+        this.validateAppointmentHour(appointment);
+        this.validateAppointmentAdvance(appointment);
+        this.validatePerPatientAndDay(appointment, currentId);
+        
+        if (appointment.getDoctorId() == null) {
+            Long randomId = this.getRandomAvailableDoctorId(appointment.getDateTime());
+            appointment.setDoctorId(randomId);
+        } else {
+            this.validateChosenDoctor(appointment.getDoctorId(), appointment.getDateTime());
+        }
+    }
 	
 	// vvv CRUD vvv
 	
 	public AppointmentResponseDTO save(final AppointmentRequestDTO userRequest) {
-		final Appointment appointment = userRequest.toAppointment();
-		
-		this.verifyAndHandleAppointment(appointment);
-		
-		return new AppointmentResponseDTO(this.appointmentRepository.save(appointment));
-	}
-	
-	public AppointmentResponseDTO update(final Long id, final AppointmentRequestDTO appointmentRequest) {
-		final Appointment toBeUpdatedAppointment = this.appointmentRepository.getReferenceById(id);
-		
-		this.verifyAndHandleAppointment(appointmentRequest.toAppointment());
-		
-		return new AppointmentResponseDTO(this.appointmentRepository.save(toBeUpdatedAppointment));
-	}
+        final Appointment appointment = userRequest.toAppointment();
+        
+        this.verifyAndFillAppointment(appointment, null);
+        
+        return new AppointmentResponseDTO(this.appointmentRepository.save(appointment));
+    }
+    
+    public AppointmentResponseDTO update(final Long id, final AppointmentRequestDTO appointmentRequest) {
+        final Appointment existingAppointment = this.appointmentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Consulta não encontrada"));
+        
+        final Appointment newDatatAppointment = appointmentRequest.toAppointment();
+        
+        this.verifyAndFillAppointment(newDatatAppointment, id);
+        
+        existingAppointment.setDateTime(newDatatAppointment.getDateTime());
+        existingAppointment.setDoctorId(newDatatAppointment.getDoctorId());
+        existingAppointment.setPatientId(newDatatAppointment.getPatientId());
+        
+        return new AppointmentResponseDTO(this.appointmentRepository.save(existingAppointment));
+    }
 	
 	public AppointmentResponseDTO patch(final Long id, final AppointmentCancelDTO appointmentCancellation) {
 		final Appointment appointment = this.appointmentRepository.getReferenceById(id);
