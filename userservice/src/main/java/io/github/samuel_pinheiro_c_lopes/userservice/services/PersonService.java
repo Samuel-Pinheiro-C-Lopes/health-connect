@@ -3,18 +3,18 @@ package io.github.samuel_pinheiro_c_lopes.userservice.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Person;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
 import io.github.samuel_pinheiro_c_lopes.userservice.broker.dtos.PersonBindDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.PersonRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.PersonResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.person.PersonRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.person.PersonResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Address;
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.PersonRepository;
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class PersonService {
@@ -42,6 +42,14 @@ public class PersonService {
 	
 	public PersonResponseDTO findById(final Long id) {
 		return new PersonResponseDTO(this.personRepository.getReferenceById(id));
+	}
+	
+	public PersonResponseDTO findByPatientId(final Long id) {
+		return new PersonResponseDTO(this.personRepository.findByPatientId(id).orElseThrow(() -> new EntityNotFoundException()));
+	}
+	
+	public PersonResponseDTO findByDoctorId(final Long id) {
+		return new PersonResponseDTO(this.personRepository.findByDoctorId(id).orElseThrow(() -> new EntityNotFoundException()));
 	}
 	
 	public List<PersonResponseDTO> findAll() {

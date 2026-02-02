@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.RoleResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.role.RoleResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.services.RoleService;
 
 @RestController

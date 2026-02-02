@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.PersonRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.PersonResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.person.PersonRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.person.PersonResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.services.PersonService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
@@ -34,6 +34,21 @@ public class PersonController {
 		@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
 		public ResponseEntity<List<PersonResponseDTO>> findAll() {
 			return ResponseEntity.ok(this.personService.findAll());
+		}
+		
+		@GetMapping("/{id}")
+		public ResponseEntity<PersonResponseDTO> findById(@PathVariable final Long id) {
+			return ResponseEntity.ok(this.personService.findById(id));
+		}
+		
+		@GetMapping("/doctor/{doctorId}")
+		public ResponseEntity<PersonResponseDTO> findByDoctorId(@PathVariable final Long doctorId) {
+			return ResponseEntity.ok(this.personService.findByDoctorId(doctorId));
+		}
+		
+		@GetMapping("/patient/{patientId}")
+		public ResponseEntity<PersonResponseDTO> findByPatientId(@PathVariable final Long patientId) {
+			return ResponseEntity.ok(this.personService.findByPatientId(patientId));
 		}
 		
 		@GetMapping("/loggedIn")

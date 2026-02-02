@@ -1,5 +1,6 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.configuration.security;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.RoleRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserResponseDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRolesRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.role.RoleRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserRolesRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Role;
 import io.github.samuel_pinheiro_c_lopes.userservice.services.RoleService;
 import io.github.samuel_pinheiro_c_lopes.userservice.services.UserService;

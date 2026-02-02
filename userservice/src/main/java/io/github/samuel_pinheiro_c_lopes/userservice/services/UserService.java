@@ -7,15 +7,17 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.RoleResponseDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserResponseDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRolesRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.role.RoleResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserRolesRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Role;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.PersonRepository;
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
@@ -57,19 +59,19 @@ public class UserService {
 		this.userRepository.delete(this.userRepository.getReferenceById(id));
 	}
 
+	@Transactional
 	public UserResponseDTO grantRoles(final Long userId, UserRolesRequestDTO userRolesRequest) {
-		final User toBeGrantedRolesUser = this.userRepository.getReferenceById(userId);
-		
+	    final User user = this.userRepository.findById(userId)
+	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-		final Set<Long> roles = toBeGrantedRolesUser.getRoles()
-				.stream()
-				.map(r -> r.getId())
-				.collect(Collectors.toSet());
-		
-		roles.addAll(userRolesRequest.roles());
-		
-		toBeGrantedRolesUser.setRoles(roles.stream().map(r -> new Role(r)).toList());
-		
-		return new UserResponseDTO(this.userRepository.save(toBeGrantedRolesUser));
+	    List<Role> newRoles = userRolesRequest.roles().stream()
+	            .map(roleId -> new Role(roleId))
+	            .toList();
+	 
+	    for (Role newRole : newRoles) 
+	        if (!user.getRoles().contains(newRole)) 
+	            user.getRoles().add(newRole);
+	        
+	    return new UserResponseDTO(this.userRepository.save(user));
 	}
 }

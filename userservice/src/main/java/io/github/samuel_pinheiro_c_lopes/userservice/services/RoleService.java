@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.RoleRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.RoleResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.role.RoleRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.role.RoleResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Role;
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.RoleRepository;
 

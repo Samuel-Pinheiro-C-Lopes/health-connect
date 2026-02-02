@@ -19,9 +19,9 @@ public class Person {
 	private String phone;
 	@OneToOne(optional = false)
 	private User user;
-	@Column(name = "doctor_id", nullable = true)
+	@Column(name = "doctor_id", unique = true, nullable = true)
     private Long doctorId;
-	@Column(name = "patient_id", nullable = true)
+	@Column(name = "patient_id", unique = true, nullable = true)
     private Long patientId;
 	@Embedded
 	private Address address;

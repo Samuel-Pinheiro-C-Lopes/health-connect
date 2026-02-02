@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserResponseDTO;
-import io.github.samuel_pinheiro_c_lopes.userservice.controllers.dtos.UserRolesRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserRolesRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.services.UserService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
