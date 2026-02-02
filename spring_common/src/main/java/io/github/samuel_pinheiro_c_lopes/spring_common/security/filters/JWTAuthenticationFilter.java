@@ -18,9 +18,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
-	private final String AUTHORIZATION_HEADER =  "Authorization";
-	private final String AUTHORIZATION_PREFIX = "Bearer";
-	
 	private final JWTService jwtService;
 	
 	@Autowired
@@ -59,9 +56,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 	}
 	
 	private String retrieveToken(final HttpServletRequest request) {
-		final String token = request.getHeader(AUTHORIZATION_HEADER);
+		final String token = request.getHeader(this.jwtService.AUTHORIZATION_HEADER);
 		
-		if (token == null || token.isEmpty() || !token.startsWith(AUTHORIZATION_PREFIX) || token.length() < 7)
+		if (!this.jwtService.validateToken(token))
 			return null;
 		
 		return token.substring(7);

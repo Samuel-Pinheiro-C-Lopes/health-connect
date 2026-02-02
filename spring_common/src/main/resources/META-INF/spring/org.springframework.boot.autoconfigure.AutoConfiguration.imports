@@ -1,1 +1,3 @@
 io.github.samuel_pinheiro_c_lopes.spring_common.security.configurations.CommonSecurityAutoConfiguration
+io.github.samuel_pinheiro_c_lopes.spring_common.documentation.SwaggerConfiguration
+io.github.samuel_pinheiro_c_lopes.spring_common.feign.CommonFeignConfiguration

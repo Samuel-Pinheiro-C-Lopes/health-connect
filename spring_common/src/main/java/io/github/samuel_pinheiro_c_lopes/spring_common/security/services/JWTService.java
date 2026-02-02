@@ -18,6 +18,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 @Service
 public class JWTService {
+	public final String AUTHORIZATION_HEADER =  "Authorization";
+	public final String AUTHORIZATION_PREFIX = "Bearer";
 	private final Algorithm algorithm;
 	private final String secret;
 	private final String issuer;
@@ -72,6 +74,10 @@ public class JWTService {
 		} catch (JWTCreationException ex) {
 			throw new RuntimeException("Error when trying to generate JWT token for " + userDetails.getUsername() + ":" + ex.getMessage());
 		}
+	}
+	
+	public Boolean validateToken(String token) {
+		return token != null && !token.isEmpty() && token.startsWith(AUTHORIZATION_PREFIX) && token.length() >= 7;
 	}
 	
 	private Instant getExpirationDate() {
