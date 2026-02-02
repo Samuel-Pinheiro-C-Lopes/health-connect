@@ -1,7 +1,7 @@
 package io.github.samuel_pinheiro_c_lopes.doctorservice.models;
 
-import io.github.samuel_pinheiro_c_lopes.doctorservice.enums.RegisterRequestStatus;
-import io.github.samuel_pinheiro_c_lopes.doctorservice.enums.Specialty;
+import io.github.samuel_pinheiro_c_lopes.spring_common.doctor.enums.Specialty;
+import io.github.samuel_pinheiro_c_lopes.spring_common.general.enums.AccountStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -28,17 +28,16 @@ public class Doctor {
 	
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private RegisterRequestStatus registerRequestStatus;
+	private AccountStatus accountStatus;
 	
 	public Doctor() {
 		// JPA
 	}
 
-	public Doctor(final Long personId, final String crm, final Specialty specialty, RegisterRequestStatus registerRequestStatus) {
+	public Doctor(final Long personId, final String crm, final Specialty specialty) {
 		this.personId = personId;
 		this.crm = crm;
 		this.specialty = specialty;
-		this.registerRequestStatus = registerRequestStatus;
 	}
 
 	public Long getId() {
@@ -71,13 +70,5 @@ public class Doctor {
 
 	public void setSpecialty(final Specialty specialty) {
 		this.specialty = specialty;
-	}
-	
-	public RegisterRequestStatus getRegisterRequestStatus() {
-		return registerRequestStatus;
-	}
-
-	public void setSpecialty(final RegisterRequestStatus registerRequestStatus) {
-		this.registerRequestStatus = registerRequestStatus;
 	}
 }

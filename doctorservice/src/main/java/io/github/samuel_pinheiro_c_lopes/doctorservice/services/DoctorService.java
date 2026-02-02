@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.samuel_pinheiro_c_lopes.doctorservice.broker.DoctorProducer;
-import io.github.samuel_pinheiro_c_lopes.doctorservice.controllers.dtos.DoctorRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.doctorservice.controllers.dtos.DoctorResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.models.Doctor;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.repositories.DoctorRepository;
+import io.github.samuel_pinheiro_c_lopes.spring_common.general.enums.AccountStatus;
 
 @Service
 public class DoctorService {
@@ -55,4 +56,11 @@ public class DoctorService {
     public void delete(final Long id) {
         this.doctorRepository.delete(this.doctorRepository.getReferenceById(id));
     }
+
+	public List<DoctorResponseDTO> findAllActive() {
+		return this.doctorRepository.findAllByAccountStatus(AccountStatus.ACTIVE)
+				.stream()
+				.map(DoctorResponseDTO::new)
+				.toList();
+	}
 }

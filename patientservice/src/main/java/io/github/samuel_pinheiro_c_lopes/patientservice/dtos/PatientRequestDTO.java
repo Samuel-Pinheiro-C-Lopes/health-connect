@@ -1,4 +1,4 @@
-package io.github.samuel_pinheiro_c_lopes.patientservice.controllers.dtos;
+package io.github.samuel_pinheiro_c_lopes.patientservice.dtos;
 
 import io.github.samuel_pinheiro_c_lopes.patientservice.models.Patient;
 

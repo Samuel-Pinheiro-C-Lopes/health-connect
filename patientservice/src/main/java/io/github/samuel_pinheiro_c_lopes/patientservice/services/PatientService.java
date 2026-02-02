@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.samuel_pinheiro_c_lopes.patientservice.broker.PatientProducer;
-import io.github.samuel_pinheiro_c_lopes.patientservice.controllers.dtos.PatientRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.patientservice.controllers.dtos.PatientResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.models.Patient;
 import io.github.samuel_pinheiro_c_lopes.patientservice.repositories.PatientRepository;
+import io.github.samuel_pinheiro_c_lopes.spring_common.general.enums.AccountStatus;
 
 
 @Service
@@ -53,5 +54,18 @@ public class PatientService {
 	
 	public void delete(final Long id) {
 		this.patientRepository.delete(this.patientRepository.getReferenceById(id));
+	}
+
+	public PatientResponseDTO findById(Long id) {
+		final Patient patient = this.patientRepository.getReferenceById(id);
+		
+		return new PatientResponseDTO(patient);
+	}
+
+	public List<PatientResponseDTO> findAllActive() {
+		return this.patientRepository.findAllByAccountStatus(AccountStatus.ACTIVE)
+				.stream()
+				.map(PatientResponseDTO::new)
+				.toList();
 	}
 }

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.samuel_pinheiro_c_lopes.patientservice.controllers.dtos.PatientRequestDTO;
-import io.github.samuel_pinheiro_c_lopes.patientservice.controllers.dtos.PatientResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.services.PatientService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
@@ -33,6 +33,17 @@ public class PatientController {
 	@PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager) or hasAuthority(@rolesConfiguration.doctor)")
 	public ResponseEntity<List<PatientResponseDTO>> findAll() {
 		return ResponseEntity.ok(this.patientService.findAll());
+	}
+	
+	@GetMapping("/active")
+	public ResponseEntity<List<PatientResponseDTO>> findAllActive() {
+		return ResponseEntity.ok(this.patientService.findAllActive());
+	}
+	
+	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager) or hasAuthority(@rolesConfiguration.doctor)")
+	public ResponseEntity<PatientResponseDTO> findById(@PathVariable final Long id) {
+		return ResponseEntity.ok(this.patientService.findById(id));
 	}
 	
 	@PostMapping

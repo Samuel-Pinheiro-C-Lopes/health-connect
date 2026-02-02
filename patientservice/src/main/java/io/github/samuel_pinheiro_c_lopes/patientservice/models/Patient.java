@@ -1,7 +1,10 @@
 package io.github.samuel_pinheiro_c_lopes.patientservice.models;
 
+import io.github.samuel_pinheiro_c_lopes.spring_common.general.enums.AccountStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +18,9 @@ public class Patient {
 	private Long personId;
 	@Column(unique = true, nullable = false)
 	private String cpf;
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private AccountStatus accountStatus;
 	
 	public Patient() { }
 
