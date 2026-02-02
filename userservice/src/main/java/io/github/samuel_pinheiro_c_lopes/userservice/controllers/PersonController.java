@@ -36,6 +36,11 @@ public class PersonController {
 			return ResponseEntity.ok(this.personService.findAll());
 		}
 		
+		@GetMapping("/loggedIn")
+		public ResponseEntity<PersonResponseDTO> findCurrentlyLoggedIn() {
+			return ResponseEntity.ok(this.personService.findCurrentlyLoggedIn());
+		}
+		
 		@PostMapping
 		//@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
 		public ResponseEntity<PersonResponseDTO> save(

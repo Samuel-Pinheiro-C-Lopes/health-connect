@@ -95,4 +95,13 @@ public class PersonService {
 	public void delete(final Long id) {
 		this.userRepository.delete(this.userRepository.getReferenceById(id));
 	}
+
+	public PersonResponseDTO findCurrentlyLoggedIn() {
+		// finds authenticated user
+		final String userEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		final User user = this.userRepository.findUserByEmail(userEmail);
+		
+		// returns it
+		return new PersonResponseDTO(user.getPerson());
+	}
 }
