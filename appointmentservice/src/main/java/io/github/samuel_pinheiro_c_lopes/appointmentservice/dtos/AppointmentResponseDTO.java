@@ -1,10 +1,10 @@
-package io.github.samuel_pinheiro_c_lopes.appointmentservice.controllers.dtos;
+package io.github.samuel_pinheiro_c_lopes.appointmentservice.dtos;
 import java.time.LocalDateTime;
 import io.github.samuel_pinheiro_c_lopes.appointmentservice.models.Appointment;
+
 public record AppointmentResponseDTO(
         Long id,
         LocalDateTime dateTime,
-        LocalDateTime endTime,
         Long patientId,
         Long doctorId,
         String status,
@@ -15,7 +15,6 @@ public record AppointmentResponseDTO(
         this(
             appointment.getId(),
             appointment.getDateTime(),
-            appointment.getEndTime(),
             appointment.getPatientId(),
             appointment.getDoctorId(),
             appointment.getStatus() == null ? null : appointment.getStatus().name(),

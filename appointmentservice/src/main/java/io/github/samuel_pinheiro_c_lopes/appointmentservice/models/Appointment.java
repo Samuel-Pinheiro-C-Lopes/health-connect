@@ -1,7 +1,7 @@
 package io.github.samuel_pinheiro_c_lopes.appointmentservice.models;
 import java.time.LocalDateTime;
-import io.github.samuel_pinheiro_c_lopes.appointmentservice.models.enums.AppointmentStatus;
 import io.github.samuel_pinheiro_c_lopes.appointmentservice.models.enums.CancelReason;
+import io.github.samuel_pinheiro_c_lopes.spring_common.appointment.enums.AppointmentStatus;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,9 +19,6 @@ public class Appointment {
 
     @Column(name="date_time", nullable = false)
     private LocalDateTime dateTime;
-
-    @Column(name="end_time", nullable = false)
-    private LocalDateTime endTime;
 
     @Column(name = "patient_id", nullable = false)
     private Long patientId;
@@ -47,9 +44,6 @@ public class Appointment {
 
     public LocalDateTime getDateTime() { return dateTime; }
     public void setDateTime(LocalDateTime dateTime) { this.dateTime = dateTime; }
-
-    public LocalDateTime getEndTime() { return endTime; }
-    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
 
     public Long getPatientId() { return patientId; }
     public void setPatientId(Long patientId) { this.patientId = patientId; }
