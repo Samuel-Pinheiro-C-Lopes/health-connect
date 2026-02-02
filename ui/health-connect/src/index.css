@@ -39,3 +39,12 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
 }
+
+a { 
+  color: var(--color-primary);
+  text-align: center;
+  margin: 8px;
+  font-size: 1.4rem;
+  font-weight: 400;
+  text-decoration: none;
+}

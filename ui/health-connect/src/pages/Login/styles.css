@@ -29,6 +29,7 @@
     height: 17%;
     object-fit: cover;
     margin-top: 0;
+    flex-shrink: 0;
 }
 
 .login-content-text{
@@ -95,15 +96,6 @@
     box-shadow: 0 4px 8px var(--color-primary); 
 }
 
-a { 
-    color: var(--color-primary);
-    text-align: center;
-    margin: 8px;
-    font-size: 1.4rem;
-    font-weight: 400;
-    text-decoration: none;
-}
-
 .form-login button{
     background-color: var(--color-primary);
     color: #fff;
@@ -114,7 +106,7 @@ a {
     height: 66px;
     min-height: 66px;
     width: 100%;
-    font-size: 2.5rem;
+    font-size: 2.0rem;
     font-weight: 400;
     box-sizing: border-box;
     padding: 0;
