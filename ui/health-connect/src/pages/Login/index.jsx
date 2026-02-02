@@ -46,8 +46,7 @@ function Login() {
                         Entrar
                     </button>
                     <div className="redirect-container">
-                        <p className="text">Não tem uma conta? <Link to='/cadastrar-paciente'>Cadastre-se como paciente.</Link></p>
-                        <p className="text">É um médico? <a href="">Solicite seu cadastro.</a></p>
+                        <p className="text">Não tem uma conta? <Link to='/cadastrar'>Cadastre-se agora.</Link></p>
                     </div>
                 </form>
             </div>
