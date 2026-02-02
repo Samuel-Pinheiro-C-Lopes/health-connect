@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: medical-rabbitmq
+    hostname: rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: secret
+    ports:
+      - "5672:5672"  
+      - "15672:15672" 
+    networks:
+      - medical-net
+
+
+  patient-db:
+    image: postgres:15
+    container_name: patient-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret_patient_pass
+      POSTGRES_DB: patient_service
+    ports:
+      - "5432:5432" 
+    volumes:
+      - patient_data:/var/lib/postgresql/data
+    networks:
+      - medical-net
+
+  doctor-db:
+    image: postgres:15
+    container_name: doctor-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret_doctor_pass
+      POSTGRES_DB: doctor_service
+    ports:
+      - "5433:5432" 
+    volumes:
+      - doctor_data:/var/lib/postgresql/data
+    networks:
+      - medical-net
+
+
+  appointment-db:
+    image: postgres:15
+    container_name: appointment-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret_appoint_pass
+      POSTGRES_DB: appointment_service
+    ports:
+      - "5434:5432" 
+    volumes:
+      - appointment_data:/var/lib/postgresql/data
+    networks:
+      - medical-net
+
+
+  user-db:
+    image: postgres:15
+    container_name: user-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret_user_pass
+      POSTGRES_DB: user_service
+    ports:
+      - "5435:5432" 
+    volumes:
+      - user_data:/var/lib/postgresql/data
+    networks:
+      - medical-net
+
+
+  mail-db:
+    image: postgres:15
+    container_name: mail-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret_mail_pass
+      POSTGRES_DB: mail_service
+    ports:
+      - "5436:5432"
+    volumes:
+      - mail_data:/var/lib/postgresql/data
+    networks:
+      - medical-net
+
+networks:
+  medical-net:
+    driver: bridge
+  
+volumes:
+  user_data:
+  doctor_data:
+  patient_data:
+  appointment_data:
+  mail_data:

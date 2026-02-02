@@ -1,0 +1,102 @@
+# ==============================================================================
+# SECURITY & SENSITIVE FILES (CRITICAL)
+# ==============================================================================
+# Ignore all production/dev config files containing passwords/keys
+**/application.properties
+**/application.yml
+**/application-dev.properties
+**/application-prod.properties
+**/application-docker.properties
+**/*.env
+.env
+.env.*
+
+# Credentials and Keys
+**/*.pem
+**/*.key
+**/*.p12
+**/*.jks
+**/*.keystore
+secrets/
+credentials/
+
+# ==============================================================================
+# BUILD TOOLS & COMPILED CODE
+# ==============================================================================
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+dependency-reduced-pom.xml
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Compiled Java class files
+*.class
+
+# Log files
+*.log
+logs/
+**/*.log
+
+# ==============================================================================
+# IDE & EDITORS (IntelliJ, Eclipse, VS Code)
+# ==============================================================================
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+.metadata/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# ==============================================================================
+# OPERATING SYSTEM FILES
+# ==============================================================================
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ==============================================================================
+# DOCKER & CONTAINERS
+# ==============================================================================
+# Ignore local data volumes mounted by docker-compose
+data/
+postgres_data/
+mysql_data/
+mongo_data/
+
+# ==============================================================================
+# SPRING BOOT SPECIFIC
+# ==============================================================================
+help.md
+dump.rdb
+
+# ==============================================================================
+# TESTING & COVERAGE
+# ==============================================================================
+coverage/
+*.lst
+*.cov
+*.lcov
+jacoco.exec
