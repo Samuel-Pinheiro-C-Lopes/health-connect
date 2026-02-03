@@ -129,7 +129,7 @@ function RegisterDoctor() {
                     </button>
                     <div className="redirect-container">
                         <p className="page-text">
-                            <Link to='/cadastrar'>Voltar</Link>
+                            <Link to='/opcoes-login'>Voltar</Link>
                         </p>
                     </div>
                 </form>
