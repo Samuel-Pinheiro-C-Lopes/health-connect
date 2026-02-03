@@ -173,13 +173,17 @@ function RegisterPerson(){
 
             const token = loginResult.data.token;
             sessionStorage.setItem(STORAGE_KEYS.TOKEN, token);
+            const role = loginResult.data.role || loginResult.data.roles?.[0] || loginResult.data.user?.role;
+            if (role) {
+                sessionStorage.setItem(STORAGE_KEYS.ROLE, role);
+            }
             const userId = registerResult.data?.id;
             if (userId) {
                 sessionStorage.setItem(STORAGE_KEYS.PERSON_ID, String(userId));
             }
 
-            setSuccessMessage('Cadastro realizado com sucesso!');
-            setShowSuccess(true);
+            // redirect to options screen so user can choose patient/doctor entry
+            navigate('/opcoes-login');
         } catch (err) {
             setErrors([err.message || 'Erro desconhecido']);
             setShowErrors(true);

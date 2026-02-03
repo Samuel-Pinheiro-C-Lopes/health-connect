@@ -28,7 +28,11 @@ function Login() {
             }
             const token = result.data.token;
             sessionStorage.setItem(STORAGE_KEYS.TOKEN, token);
-            navigate('/cadastrar');
+            const role = result.data.role || result.data.roles?.[0] || result.data.user?.role;
+            if (role) {
+                sessionStorage.setItem(STORAGE_KEYS.ROLE, role);
+            }
+            navigate('/opcoes-login');
         } catch (err) {
             setErrors([err.message || 'Erro desconhecido']);
             setShowErrors(true);

@@ -5,6 +5,10 @@ import RegisterPerson from '../pages/RegisterPerson';
 import RegisterDoctor from '../pages/RegisterDoctor';
 import ForgotPassword from '../pages/Forgotpassword';
 import AdminManagement from '../pages/AdminManagement';
+import OptionsLogin from '../pages/OptionsLogin';
+import ProtectedRoute from '../components/ProtectedRoute';
+import TokenNonAdminRoute from '../components/TokenNonAdminRoute';
+import AdminManagement from '../pages/AdminManagement';
 
 function AppRoutes() {
   return (
@@ -14,8 +18,24 @@ function AppRoutes() {
             <Route path="esqueci-senha" element={<ForgotPassword />} />
             <Route path="admin" element={<AdminManagement />} />
             <Route path="cadastrar" element={<RegisterPerson/>}/>
-            <Route path="cadastrar-paciente" element={<RegisterPatient/>}/>
-            <Route path="cadastrar-medico" element={<RegisterDoctor/>}/>
+            <Route path="opcoes-login" element={<OptionsLogin/>} />
+            <Route path="admin" element={<AdminManagement />} />
+            <Route
+              path="cadastrar-paciente"
+              element={
+                <TokenNonAdminRoute>
+                  <RegisterPatient />
+                </TokenNonAdminRoute>
+              }
+            />
+            <Route
+              path="cadastrar-medico"
+              element={
+                <TokenNonAdminRoute>
+                  <RegisterDoctor />
+                </TokenNonAdminRoute>
+              }
+            />
         </Routes>
     </BrowserRouter>
   );
