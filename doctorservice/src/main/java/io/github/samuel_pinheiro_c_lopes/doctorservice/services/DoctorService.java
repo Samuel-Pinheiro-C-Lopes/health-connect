@@ -118,7 +118,7 @@ public class DoctorService {
 	}
     
     public DoctorResponseDTO findById(final Long id) {
-        return new DoctorResponseDTO(this.doctorRepository.getReferenceById(id));
+        return new DoctorResponseDTO(this.doctorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Doctor not found!")));
     }
 
     public DoctorResponseDTO update(final Long id, final DoctorRequestDTO doctorRequest) {
