@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import imageRegisterPerson from "../../assets/images/image_register_person.png";
 import { useState } from "react";
 import { validateEmail } from "../../utils/validations";
 import ErrorModal from "../../components/ErrorModal";
+import SuccessModal from "../../components/SuccessModal";
+import { registerUserAsync } from "../../command/userCommand";
 
 function RegisterPerson(){
     const [formData, setFormData] = useState({
@@ -29,6 +31,10 @@ function RegisterPerson(){
     const [emailError, setEmailError] = useState(false);
     const [showErrors, setShowErrors] = useState(false);
     const [errors, setErrors] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -121,13 +127,31 @@ function RegisterPerson(){
         return newErrors.length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const isValid = validateForm();
         if(!isValid){
             return;
         }
-        //Chama a API
+
+        setLoading(true);
+        setShowErrors(false);
+
+        try {
+            const result = await registerUserAsync(formData.email, formData.senha);
+            if (result.success) {
+                setSuccessMessage("Conta criada com sucesso!");
+                setShowSuccess(true);
+            } else {
+                setErrors([result.message || 'Erro ao criar conta']);
+                setShowErrors(true);
+            }
+        } catch (err) {
+            setErrors([err.message || 'Erro desconhecido']);
+            setShowErrors(true);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return(
@@ -266,12 +290,19 @@ function RegisterPerson(){
                         errors={errors}
                         onClose={() => setShowErrors(false)}
                     />
+                    {loading && <p className="loading-text">Enviando requisição... ⏳</p>}
+                    <SuccessModal
+                        isOpen={showSuccess}
+                        message={successMessage}
+                        onClose={() => { setShowSuccess(false); navigate('/'); }}
+                    />
                     <button
                         type="submit"
                         onClick={handleSubmit}
                         className="btn-primary"
+                        disabled={loading}
                     >
-                        Criar Conta
+                        {loading ? 'Carregando...' : 'Criar Conta'}
                     </button>
                     <div className="redirect-container">
                         <p className="page-text">Já tem uma conta? <Link to='/'>Faça login</Link></p>
