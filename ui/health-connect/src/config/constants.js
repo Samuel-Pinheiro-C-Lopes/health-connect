@@ -55,3 +55,9 @@ export const PATIENT_APPOINTMENTS_LABELS = {
     NENHUMA_AGENDADA: "Nenhuma consulta agendada.",
     NENHUM_HISTORICO: "Nenhuma consulta no histórico.",
 };
+
+export const ROLES = { 
+    ADMIN: "ADMIN",
+    DOCTOR: "DOCTOR",
+    PATIENT: "PATIENT",
+}

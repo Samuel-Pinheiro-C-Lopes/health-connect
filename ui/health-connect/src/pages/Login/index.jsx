@@ -29,8 +29,12 @@ function Login() {
             const token = result.data.token;
             sessionStorage.setItem(STORAGE_KEYS.TOKEN, token);
             const role = result.data.role || result.data.roles?.[0] || result.data.user?.role;
-            if (role) {
+            if (role && role.length > 0) {
                 sessionStorage.setItem(STORAGE_KEYS.ROLE, role);
+            }
+            if(role.includes("ADMIN")) {
+                navigate('/admin/');
+                return;
             }
             navigate('/opcoes-login');
         } catch (err) {
