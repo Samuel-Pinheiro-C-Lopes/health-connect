@@ -24,7 +24,7 @@ public class RoleController {
 	
 	
 	@GetMapping
-	@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<List<RoleResponseDTO>> findAll() {
 		return ResponseEntity.ok(this.roleService.findAll());
 	}

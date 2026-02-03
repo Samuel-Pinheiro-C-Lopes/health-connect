@@ -1,7 +1,8 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.configuration.security;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,27 @@ public class AdminInitializer implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		final List<Role> roles = this.saveRoles();
+				
+		this.saveAdminUser(roles);
+	}
+	
+	private List<Role> saveRoles() {
+		Set<String> roles = this.roleService.findAll().stream().map(r -> r.name()).collect(Collectors.toSet());
+		
+		roles.addAll(this.roleService.getAvailableRoles());
+		
+		return this.roleService.saveAll(
+			roles
+			.stream()
+			.map(r -> new RoleRequestDTO(r))
+			.toList()
+		);
+	}
+	
+	private void saveAdminUser(final List<Role> roles) throws Exception {
+		final boolean hasAdmin = this.userService.findAll().stream().anyMatch(u -> u.email().equals(this.adminUsername));
+		
+		if (hasAdmin) return;
 		
 		final Role adminRole = roles
 				.stream()
@@ -44,24 +66,22 @@ public class AdminInitializer implements CommandLineRunner {
 				.findFirst()
 				.orElseThrow(() -> new AdminRoleNotFoundException());;
 				
-		this.saveAdminUser(adminRole);
-	}
-	
-	private List<Role> saveRoles() {
-		return this.roleService.saveAll(
-			this.roleService.getAvailableRoles()
-			.stream()
-			.map(r -> new RoleRequestDTO(r))
-			.toList()
-		);
-	}
-	
-	private void saveAdminUser(final Role adminRole) {
 		final UserResponseDTO admin = this.userService.save(new UserRequestDTO(
 				this.adminUsername,
-				this.adminPassword
+				this.adminPassword, 
+				null, 
+				null, 
+				adminUsername, 
+				adminUsername, 
+				adminUsername, 
+				adminUsername, 
+				adminUsername, 
+				adminUsername, 
+				adminUsername, 
+				adminUsername, 
+				adminUsername
 		));
-		this.userService.grantRoles(admin.id(), new UserRolesRequestDTO(List.of(adminRole.getId())));
+		this.userService.grantRoles(admin.id(), new UserRolesRequestDTO(List.of(adminRole.getAuthority())));
 	}
 	
 	private class AdminRoleNotFoundException extends Exception {

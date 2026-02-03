@@ -1,10 +1,10 @@
-package io.github.samuel_pinheiro_c_lopes.spring_common.person.dtos;
+package io.github.samuel_pinheiro_c_lopes.spring_common.user.dtos;
 
-public interface CommonPersonResponseDTO {
+public interface CommonUserResponseDTO {
 	Long id();
 	String name();
 	String phone();
-	Long userId();
+	String email();
 	Long patientId();
 	Long doctorId();
 	String postalCode(); 

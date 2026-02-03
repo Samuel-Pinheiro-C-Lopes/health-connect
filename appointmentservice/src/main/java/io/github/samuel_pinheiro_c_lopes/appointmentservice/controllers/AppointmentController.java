@@ -20,7 +20,7 @@ import io.github.samuel_pinheiro_c_lopes.appointmentservice.dtos.AppointmentFull
 import io.github.samuel_pinheiro_c_lopes.appointmentservice.dtos.AppointmentRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.appointmentservice.dtos.AppointmentResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.appointmentservice.services.AppointmentService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/appointment")

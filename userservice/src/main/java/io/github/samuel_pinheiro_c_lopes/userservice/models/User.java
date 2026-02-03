@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,8 +26,16 @@ public class User implements UserDetails {
 	private String email;
 	@Column(nullable = false)
 	private String password;
-	@OneToOne(optional = true, cascade = CascadeType.REMOVE)
-	private Person person;
+	@Column(nullable = false)
+	private String name;
+	@Column(nullable = false)
+	private String phone;
+	@Column(name = "doctor_id", unique = true, nullable = true)
+    private Long doctorId;
+	@Column(name = "patient_id", unique = true, nullable = true)
+    private Long patientId;
+	@Embedded
+	private Address address;
 	
 	public User() {
 		super();
@@ -46,6 +54,24 @@ public class User implements UserDetails {
 	public User(final List<Role> roles, final String email, final String password) {
 		this(email, password);
 		this.password = password;
+		this.roles = roles;
+	}
+
+	public User(
+			String email, 
+			String password, 
+			Long doctorId,
+			Long patientId,
+			String name,
+			String phone,
+			Address address
+	) {
+		this(email, password);
+		this.doctorId = doctorId;
+		this.patientId = patientId;
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
 	}
 
 	public Long getId() {
@@ -75,14 +101,6 @@ public class User implements UserDetails {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public Person getPerson() {
-		return person;
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
-	}
 
 	@Override
 	public String getPassword() {
@@ -98,4 +116,50 @@ public class User implements UserDetails {
 	public List<Role> getAuthorities() {
 		return this.getRoles();
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Long getDoctorId() {
+		return doctorId;
+	}
+
+	public void setDoctorId(Long doctorId) {
+		this.doctorId = doctorId;
+	}
+
+	public Long getPatientId() {
+		return patientId;
+	}
+
+	public void setPatientId(Long patientId) {
+		this.patientId = patientId;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	
 }

@@ -19,7 +19,7 @@ import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientFullResponse
 import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.services.PatientService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/patient")

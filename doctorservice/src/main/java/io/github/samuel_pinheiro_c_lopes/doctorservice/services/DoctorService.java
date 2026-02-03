@@ -10,19 +10,19 @@ import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.models.Doctor;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.repositories.DoctorRepository;
-import io.github.samuel_pinheiro_c_lopes.spring_common.person.clients.PersonClient;
 import io.github.samuel_pinheiro_c_lopes.spring_common.general.enums.AccountStatus;
-import io.github.samuel_pinheiro_c_lopes.spring_common.person.dtos.CommonPersonBindPatchDTO;
-import io.github.samuel_pinheiro_c_lopes.spring_common.person.dtos.CommonPersonResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.spring_common.user.clients.UserClient;
+import io.github.samuel_pinheiro_c_lopes.spring_common.user.dtos.CommonUserBindRequestDTO;
+import io.github.samuel_pinheiro_c_lopes.spring_common.user.dtos.CommonUserResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class DoctorService {
     private final DoctorRepository doctorRepository;
-    private final PersonClient personClient;
+    private final UserClient personClient;
 
     @Autowired
-    public DoctorService(final DoctorRepository doctorRepository, final PersonClient personClient) {
+    public DoctorService(final DoctorRepository doctorRepository, final UserClient personClient) {
         this.doctorRepository = doctorRepository;
         this.personClient = personClient;
     }
@@ -82,27 +82,26 @@ public class DoctorService {
 	private record PersonBindPatchDTO(
 			Long patientId,
 			Long doctorId
-		) implements CommonPersonBindPatchDTO { }
+		) implements CommonUserBindRequestDTO { }
 	
 
 	private DoctorFullResponseDTO getDoctorFullResponseFrom(final Doctor doctor) {
-		final CommonPersonResponseDTO person = this.personClient.findByDoctorId(doctor.getId());
+		final CommonUserResponseDTO user = this.personClient.findByDoctorId(doctor.getId());
 		
 		return new DoctorFullResponseDTO(
 				doctor.getId(),
-				person.id(),
+				user.id(),
 				doctor.getCrm(),
 				doctor.getSpecialty(),
-				person.name(),
-				person.phone(),
-				person.userId(),
-				person.postalCode(),
-				person.avenue(),
-				person.complement(),
-				person.number(),
-				person.city(),
-				person.district(),
-				person.state()
+				user.name(),
+				user.phone(),
+				user.postalCode(),
+				user.avenue(),
+				user.complement(),
+				user.number(),
+				user.city(),
+				user.district(),
+				user.state()
 		);
 	}
 }

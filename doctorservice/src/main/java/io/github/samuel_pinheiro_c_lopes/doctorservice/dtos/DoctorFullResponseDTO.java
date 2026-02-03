@@ -4,12 +4,11 @@ import io.github.samuel_pinheiro_c_lopes.spring_common.doctor.enums.Specialty;
 
 public record DoctorFullResponseDTO(
         Long id,
-        Long personId,
+        Long userId,
         String crm,
         Specialty specialty,
 		String name,
 		String phone,
-		Long userId,
 		String postalCode, 
 		String avenue, 
 		String complement, 

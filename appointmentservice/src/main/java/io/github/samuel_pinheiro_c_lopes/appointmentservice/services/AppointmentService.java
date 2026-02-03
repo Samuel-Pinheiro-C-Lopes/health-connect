@@ -20,19 +20,19 @@ import io.github.samuel_pinheiro_c_lopes.spring_common.appointment.enums.Appoint
 import io.github.samuel_pinheiro_c_lopes.spring_common.doctor.clients.DoctorClient;
 import io.github.samuel_pinheiro_c_lopes.spring_common.doctor.dtos.CommonDoctorResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.spring_common.patient.clients.PatientClient;
-import io.github.samuel_pinheiro_c_lopes.spring_common.person.clients.PersonClient;
 import io.github.samuel_pinheiro_c_lopes.spring_common.patient.dtos.CommonPatientResponseDTO;
-import io.github.samuel_pinheiro_c_lopes.spring_common.person.dtos.CommonPersonResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.spring_common.user.clients.UserClient;
+import io.github.samuel_pinheiro_c_lopes.spring_common.user.dtos.CommonUserResponseDTO;
 
 @Service
 public class AppointmentService {
 	private final AppointmentRepository appointmentRepository;
-	private final PersonClient personClient;
+	private final UserClient personClient;
 	private final DoctorClient doctorClient;
 	private final PatientClient patientClient;
 
 	@Autowired
-	public AppointmentService(final AppointmentRepository appointmentRepository, final PersonClient personClient, final DoctorClient doctorClient, final PatientClient patientClient) {
+	public AppointmentService(final AppointmentRepository appointmentRepository, final UserClient personClient, final DoctorClient doctorClient, final PatientClient patientClient) {
 		this.appointmentRepository = appointmentRepository;
 		this.personClient = personClient;
 		this.doctorClient = doctorClient;
@@ -189,8 +189,8 @@ public class AppointmentService {
 	}
 	
 	private AppointmentFullResponseDTO findFromAppointment(final Appointment a) {
-		final CommonPersonResponseDTO patientPerson = this.personClient.findByPatientId(a.getPatientId());
-		final CommonPersonResponseDTO doctorPerson = this.personClient.findByDoctorId(a.getDoctorId());
+		final CommonUserResponseDTO patientPerson = this.personClient.findByPatientId(a.getPatientId());
+		final CommonUserResponseDTO doctorPerson = this.personClient.findByDoctorId(a.getDoctorId());
 		final CommonPatientResponseDTO patient = this.patientClient.findById(a.getPatientId());
 		final CommonDoctorResponseDTO doctor = this.doctorClient.findById(a.getDoctorId());
 		
@@ -208,13 +208,13 @@ public class AppointmentService {
 	}
 
 	public List<AppointmentFullResponseDTO> findAllFromPatientCurrentlyLoggedIn() {
-		final CommonPersonResponseDTO person = this.personClient.findCurrentlyLoggedIn();
+		final CommonUserResponseDTO person = this.personClient.findCurrentlyLoggedIn();
 		
 		return this.findAllFromPatient(person.patientId());
 	}
 	
 	public List<AppointmentFullResponseDTO> findAllFromDoctorCurrentlyLoggedIn() {
-		final CommonPersonResponseDTO person = this.personClient.findCurrentlyLoggedIn();
+		final CommonUserResponseDTO person = this.personClient.findCurrentlyLoggedIn();
 		
 		return this.findAllFromDoctor(person.doctorId());
 	}

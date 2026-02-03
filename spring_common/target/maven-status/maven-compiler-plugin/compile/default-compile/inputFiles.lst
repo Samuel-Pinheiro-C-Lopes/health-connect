@@ -10,12 +10,12 @@
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/general/enums/AccountStatus.java
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/patient/clients/PatientClient.java
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/patient/dtos/CommonPatientResponseDTO.java
-/var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/person/clients/PersonClient.java
-/var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/person/dtos/CommonPersonBindPatchDTO.java
-/var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/person/dtos/CommonPersonResponseDTO.java
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/security/configurations/CommonSecurityAutoConfiguration.java
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/security/configurations/FeignClientInterceptorConfiguration.java
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/security/configurations/RolesConfiguration.java
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/security/filters/JWTAuthenticationFilter.java
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/security/interceptors/FeignClientInterceptor.java
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/security/services/JWTService.java
+/var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/user/clients/UserClient.java
+/var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/user/dtos/CommonUserBindRequestDTO.java
+/var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/user/dtos/CommonUserResponseDTO.java

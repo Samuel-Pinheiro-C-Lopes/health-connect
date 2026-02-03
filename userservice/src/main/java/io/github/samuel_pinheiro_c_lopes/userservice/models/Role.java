@@ -1,6 +1,7 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.models;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -53,5 +54,19 @@ public class Role implements GrantedAuthority {
 	@Override
 	public String toString() {
 		return this.authority;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || getClass() != o.getClass()) return false;
+	    Role role = (Role) o;
+	    // Compare by unique Business Key (Authority Name)
+	    return Objects.equals(authority, role.authority); 
+	}
+
+	@Override
+	public int hashCode() {
+	    return Objects.hash(authority);
 	}
 }
