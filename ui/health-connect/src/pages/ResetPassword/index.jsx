@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import ErrorModal from "../../components/ErrorModal";
+import { resetPassword } from "../../command/resetPasswordCommand";
 import { getAuthHeader } from "../../utils/httpUtils";
 function ResetPassword() {
     const [password, setPassword] = useState("");
@@ -9,9 +10,11 @@ function ResetPassword() {
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
     const [showErrors, setShowErrors] = useState(false);
     const history = useHistory();
+
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     };
+
     const handleConfirmPasswordChange = (e) => {
         setConfirmPassword(e.target.value);
     };
@@ -38,18 +41,9 @@ function ResetPassword() {
         e.preventDefault();
         if (validateForm()) {
             try {
-                const token = localStorage.getItem('auth_token');  
-                const response = await fetch("/api/user/reset-password", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        ...getAuthHeader(token), 
-                    },
-                    body: JSON.stringify({
-                        password,
-                    }),
-                });
-                if (response.ok) {
+                const token = localStorage.getItem('auth_token'); 
+                const response = await resetPassword(token, password); 
+                if (response.success) {
                     console.log("Senha redefinida com sucesso.");
                     history.push("/login");  
                 } else {
@@ -60,7 +54,6 @@ function ResetPassword() {
             }
         }
     };
-
     return (
         <div className="reset-password">
             <h2>Redefinir Senha</h2>
