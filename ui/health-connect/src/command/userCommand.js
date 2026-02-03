@@ -1,31 +1,68 @@
 import api from "../api/api";
 
-const url = "user";
+const getAuthHeader = (token) => ({
+    headers: { Authorization: `Bearer ${token}` }
+});
 
-export async function registerUser(email, password){
-    const request = {email, password};
-
-    let response = {
-        succes : false,
-        data : null,
-        message: "",
-        statusCode : 200
-    };
-
+export async function registerUser(email, password) {
     try {
-        const res = await api.post(url, request);
-
-        if (res.status === 200) {
-            responseResult.success = true;
-            responseResult.data = res.data;
-            responseResult.statusCode = res.status;
-        }
-        
+        const response = await api.post("user", { email, password });
+        return { success: true, data: response.data, statusCode: 200 };
     } catch (e) {
-        responseResult.success = false;
-        responseResult.statusCode = e.response?.status || 500;
-        responseResult.message = e.message;
+        return { success: false, message: e.message, statusCode: e.response?.status || 500 };
     }
+}
 
-    return responseResult;
+export async function login(email, password) {
+    try {
+        const response = await api.post("authentication/login", { email, password }); 
+        return { success: true, data: response.data, statusCode: 200 }; 
+    } catch (e) {
+        return { success: false, message: e.message, statusCode: e.response?.status || 500 };
+    }
+}
+
+export async function createPerson(token, personData) {
+    try { 
+        const response = await api.post("person", personData, getAuthHeader(token)); 
+        return { success: true, data: response.data, statusCode: 200 };
+    } catch (e) {
+        return { success: false, message: e.message, statusCode: e.response?.status || 500 };
+    }
+}
+
+export async function updateUser(token, userId, newCredentials) {
+    try {
+        const response = await api.put(`user/${userId}`, newCredentials, getAuthHeader(token));
+        return { success: true, data: response.data, statusCode: 200 };
+    } catch (e) {
+        return { success: false, message: e.message, statusCode: e.response?.status || 500 };
+    }
+}
+
+export async function listUsers(token) {
+    try {
+        const response = await api.get("user", getAuthHeader(token));
+        return { success: true, data: response.data };
+    } catch (e) {
+        return { success: false, message: e.message };
+    }
+}
+
+export async function deleteUser(token, userId) {
+    try {
+        const response = await api.delete(`user/${userId}`, getAuthHeader(token));
+        return { success: true, data: response.data };
+    } catch (e) {
+        return { success: false, message: e.message };
+    }
+}
+
+export async function assignRoles(token, userId, rolesArray) {
+    try {
+        const response = await api.post(`user/${userId}/roles`, { roles: rolesArray }, getAuthHeader(token));
+        return { success: true, data: response.data };
+    } catch (e) {
+        return { success: false, message: e.message };
+    }
 }
