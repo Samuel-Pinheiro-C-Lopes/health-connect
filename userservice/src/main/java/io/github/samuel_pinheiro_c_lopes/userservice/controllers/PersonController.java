@@ -37,18 +37,6 @@ public class PersonController {
 			return ResponseEntity.ok(this.personService.findAll());
 		}
 		
-		@GetMapping("/")
-		@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
-		public ResponseEntity<List<PersonResponseDTO>> findAllByDoctorIds() {
-			return ResponseEntity.ok(this.personService.findAll());
-		}
-		
-		@GetMapping("")
-		@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
-		public ResponseEntity<List<PersonResponseDTO>> findAllByPatientIds() {
-			return ResponseEntity.ok(this.personService.findAll());
-		}
-		
 		@GetMapping("/{id}")
 		@PreAuthorize("isAuthenticated()")
 		public ResponseEntity<PersonResponseDTO> findById(@PathVariable final Long id) {

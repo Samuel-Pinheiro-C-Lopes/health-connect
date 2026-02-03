@@ -94,10 +94,6 @@
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
 		</dependency>
-		<dependency>
-		    <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
 		
 		<dependency>
 		    <groupId>io.github.samuel_pinheiro_c_lopes</groupId>
