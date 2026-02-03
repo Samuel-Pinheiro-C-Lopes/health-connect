@@ -1,6 +1,6 @@
 import { getAuthHeader} from "../utils/httpUtils";
 
-export async function listUsers(token) {
+export async function listUsersAsync(token) {
     try {
         const response = await api.get("user", getAuthHeader(token));
         return { success: true, data: response.data };
