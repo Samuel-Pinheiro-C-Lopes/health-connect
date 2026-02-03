@@ -132,7 +132,7 @@ function DoctorHome() {
                     </div>
                     <div className="doctor-home-header-right">
                         <span className="doctor-home-header-bell">🔔</span>
-                        <span className="doctor-home-header-avatar">👤</span>
+                        <Link to="/" className="doctor-home-header-avatar">↩️</Link>
                         <span className="doctor-home-today-count">
                             {DOCTOR_HOME_LABELS.HOJE_CONSULTAS.replace("{count}", String(todayCount))}
                         </span>

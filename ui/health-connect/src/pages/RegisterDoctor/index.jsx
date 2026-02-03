@@ -22,7 +22,7 @@ function RegisterDoctor() {
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     
-    const specialties = ["Ortopedia", "Cardiologia", "Ginecologia", "Dermatologia"];
+    const specialties =  ["Orthopedics", "Cardiology", "Dermatology", "Gynecology"];
 
     const handleChange = (e) => {
         const { name, value } = e.target;
