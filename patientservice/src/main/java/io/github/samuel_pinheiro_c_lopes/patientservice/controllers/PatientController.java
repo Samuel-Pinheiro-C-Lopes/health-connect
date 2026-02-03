@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientFullResponse
 import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.services.PatientService;
-import org.springframework.web.bind.annotation.RequestBody;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/patient")
@@ -52,7 +53,7 @@ public class PatientController {
 	@PostMapping
 	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<PatientResponseDTO> save(
-			@RequestBody final PatientRequestDTO userRequest
+			@Valid @RequestBody final PatientRequestDTO userRequest
 	) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.patientService.save(userRequest));
 	}
@@ -61,7 +62,7 @@ public class PatientController {
 	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<PatientResponseDTO> update(
 			@PathVariable final Long id, 
-			@RequestBody final PatientRequestDTO userRequest
+			@Valid @RequestBody final PatientRequestDTO userRequest
 	) {
 		return ResponseEntity.ok(this.patientService.update(id, userRequest));
 	}

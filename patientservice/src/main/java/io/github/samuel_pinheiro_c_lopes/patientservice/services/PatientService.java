@@ -18,7 +18,6 @@ import io.github.samuel_pinheiro_c_lopes.spring_common.user.dtos.CommonUserBindR
 import io.github.samuel_pinheiro_c_lopes.spring_common.user.dtos.CommonUserResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 
-
 @Service
 public class PatientService {
 	private final PatientRepository patientRepository;
@@ -80,7 +79,7 @@ public class PatientService {
 		
 		final Patient savedPatient = this.patientRepository.save(toSavePatient);
 		
-		this.userClient.patch(userRequest.personId(), new PersonBindPatchDTO(savedPatient.getId(), null));
+		this.userClient.patch(userRequest.personId(), new CommonUserBindRequestDTO(savedPatient.getId(), null));
 		
 		this.sendAccountUpdateTo(savedPatient);
 		
@@ -88,9 +87,9 @@ public class PatientService {
 	}
 	
 	private void sendAccountUpdateTo(final Patient patient) {
-        final CommonUserResponseDTO patientUser = this.userClient.findByDoctorId(patient.getId());
+        final CommonUserResponseDTO patientUser = this.userClient.findByPatientId(patient.getId());
         
-		rabbitTemplate.convertAndSend("email.notification", new EmailDto(
+		rabbitTemplate.convertAndSend("email.notification", new CommonMailDTO(
             	"healthconnectpweb@gmail.com",
             	patientUser.email(),
             	"Status da conta alterada!",
@@ -100,13 +99,6 @@ public class PatientService {
 		));
 	}
 	
-	private record EmailDto(
-			String mailFrom, 
-			String mailTo,
-			String mailSubject, 
-			String mailBody
-	) implements CommonMailDTO { }
-	
 	public PatientResponseDTO update(final Long id, final PatientRequestDTO userRequest) {
 		final Patient toBeUpdatedPatient = this.patientRepository.getReferenceById(id);
 		
@@ -115,7 +107,7 @@ public class PatientService {
 		
 		final Patient savedPatient = this.patientRepository.save(toBeUpdatedPatient);
 		
-		this.userClient.patch(userRequest.personId(), new PersonBindPatchDTO(id, null));
+		this.userClient.patch(userRequest.personId(), new CommonUserBindRequestDTO(id, null));
 		
 		return new PatientResponseDTO(savedPatient);
 	}
@@ -133,10 +125,4 @@ public class PatientService {
 		
 		this.sendAccountUpdateTo(patient);
 	}
-	
-	
-	private record PersonBindPatchDTO(
-		Long patientId,
-		Long doctorId
-	) implements CommonUserBindRequestDTO { }
 }

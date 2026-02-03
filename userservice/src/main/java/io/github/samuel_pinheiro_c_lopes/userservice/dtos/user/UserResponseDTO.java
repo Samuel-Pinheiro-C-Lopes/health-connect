@@ -1,6 +1,5 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.dtos.user;
 
-import io.github.samuel_pinheiro_c_lopes.spring_common.user.dtos.CommonUserResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
 
 public record UserResponseDTO(
@@ -17,7 +16,7 @@ public record UserResponseDTO(
 		String city, 
 		String district, 
 		String state
-) implements CommonUserResponseDTO {
+) {
 	public UserResponseDTO(final User user) {
 		this(
 			user.getId(), 

@@ -1,11 +1,13 @@
 package io.github.samuel_pinheiro_c_lopes.doctorservice.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import feign.FeignException;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorFullResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorResponseDTO;
@@ -42,7 +44,7 @@ public class DoctorService {
     	
         final Doctor savedDoctor = this.doctorRepository.save(toSaveDoctor);
 
-        personClient.patch(doctorRequest.personId(), new PersonBindPatchDTO(null, savedDoctor.getId()));
+        personClient.patch(doctorRequest.personId(), new CommonUserBindRequestDTO(null, savedDoctor.getId()));
         
         this.sendAccountUpdateTo(savedDoctor);
         
@@ -60,6 +62,7 @@ public class DoctorService {
         return this.doctorRepository.findAll()
                 .stream()
                 .map(this::getDoctorFullResponseFrom)
+                .filter(Objects::nonNull)
                 .toList();
     }
 
@@ -67,6 +70,7 @@ public class DoctorService {
         return this.doctorRepository.findAllByAccountStatus(AccountStatus.ACTIVE)
                 .stream()
                 .map(this::getDoctorFullResponseFrom)
+                .filter(Objects::nonNull)
                 .toList();
     }
 
@@ -74,6 +78,7 @@ public class DoctorService {
         return this.doctorRepository.findAllByAccountStatus(AccountStatus.PENDING)
                 .stream()
                 .map(this::getDoctorFullResponseFrom)
+                .filter(Objects::nonNull)
                 .toList();
     }
 
@@ -102,7 +107,7 @@ public class DoctorService {
 	private void sendAccountUpdateTo(final Doctor doctor) {
         final CommonUserResponseDTO doctorUser = this.personClient.findByDoctorId(doctor.getId());
         
-		rabbitTemplate.convertAndSend("email.notification", new EmailDto(
+		rabbitTemplate.convertAndSend("email.notification", new CommonMailDTO(
             	"healthconnectpweb@gmail.com",
             	doctorUser.email(),
             	"Status da conta alterada!",
@@ -111,13 +116,6 @@ public class DoctorService {
             			doctor.getAccountStatus().getMessage()
 		));
 	}
-	
-	private record EmailDto(
-			String mailFrom, 
-			String mailTo,
-			String mailSubject, 
-			String mailBody
-	) implements CommonMailDTO { }
     
     public DoctorResponseDTO findById(final Long id) {
         return new DoctorResponseDTO(this.doctorRepository.getReferenceById(id));
@@ -132,7 +130,7 @@ public class DoctorService {
 
         final Doctor savedDoctor = this.doctorRepository.save(toBeUpdatedDoctor);
 
-        personClient.patch(doctorRequest.personId(), new PersonBindPatchDTO(null, id));
+        personClient.patch(doctorRequest.personId(), new CommonUserBindRequestDTO(null, id));
 
         return new DoctorResponseDTO(savedDoctor);
     }
@@ -155,30 +153,29 @@ public class DoctorService {
 		
 		this.doctorRepository.save(doctor);
 	}
-	
-	private record PersonBindPatchDTO(
-			Long patientId,
-			Long doctorId
-		) implements CommonUserBindRequestDTO { }
-	
 
 	private DoctorFullResponseDTO getDoctorFullResponseFrom(final Doctor doctor) {
-		final CommonUserResponseDTO user = this.personClient.findByDoctorId(doctor.getId());
-		
-		return new DoctorFullResponseDTO(
-				doctor.getId(),
-				user.id(),
-				doctor.getCrm(),
-				doctor.getSpecialty(),
-				user.name(),
-				user.phone(),
-				user.postalCode(),
-				user.avenue(),
-				user.complement(),
-				user.number(),
-				user.city(),
-				user.district(),
-				user.state()
-		);
+		try {
+	        final CommonUserResponseDTO user = this.personClient.findByDoctorId(doctor.getId());
+	        
+	        return new DoctorFullResponseDTO(
+	                doctor.getId(),
+	                user.id(),
+	                doctor.getCrm(),
+	                doctor.getSpecialty(),
+	                user.name(),
+	                user.phone(),
+	                user.postalCode(),
+	                user.avenue(),
+	                user.complement(),
+	                user.number(),
+	                user.city(),
+	                user.district(),
+	                user.state()
+	        );
+	    } catch (FeignException.NotFound e) {
+	        System.err.println("Warning: Orphan doctor found with ID " + doctor.getId());
+	        return null; 
+	    }
 	}
 }
