@@ -11,7 +11,7 @@ import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 	@EntityGraph(attributePaths = {"roles"})
-	Optional<User> findUserByEmail(String email);
+	Optional<User> findUserByEmailIgnoreCase(String email);
 	Optional<User> findByPatientId(Long patientId);
 	Optional<User> findByDoctorId(Long doctorId);
 }

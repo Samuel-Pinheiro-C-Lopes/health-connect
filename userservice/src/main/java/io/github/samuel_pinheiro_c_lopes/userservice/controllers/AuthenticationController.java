@@ -29,11 +29,14 @@ public class AuthenticationController {
 					authenticationRequest.password()
 			);
 			
-			var authorization = authenticationManager.authenticate(authenticationToken);
-			
-			var jwtToken = this.jwtokenService.getToken((User)authorization.getPrincipal());
-			
-			return ResponseEntity.ok(new JWTResponseDTO(jwtToken));			
+			try {
+				var authorization = authenticationManager.authenticate(authenticationToken);
+				
+				var jwtToken = this.jwtokenService.getToken((User)authorization.getPrincipal());
+				return ResponseEntity.ok(new JWTResponseDTO(jwtToken));			
+			} catch (Exception ex) {
+				throw ex;
+			}
 	}
 	
 	private record AuthenticationRequestDTO(String username, String password) { }

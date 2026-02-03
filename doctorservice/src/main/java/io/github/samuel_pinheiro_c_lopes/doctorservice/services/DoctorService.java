@@ -42,6 +42,41 @@ public class DoctorService {
                 .toList();
     }
 
+    public List<DoctorFullResponseDTO> findAllFull() {
+        return this.doctorRepository.findAll()
+                .stream()
+                .map(this::getDoctorFullResponseFrom)
+                .toList();
+    }
+
+    public List<DoctorFullResponseDTO> findAllActiveFull() {
+        return this.doctorRepository.findAllByAccountStatus(AccountStatus.ACTIVE)
+                .stream()
+                .map(this::getDoctorFullResponseFrom)
+                .toList();
+    }
+
+    public List<DoctorFullResponseDTO> findAllPending() {
+        return this.doctorRepository.findAllByAccountStatus(AccountStatus.PENDING)
+                .stream()
+                .map(this::getDoctorFullResponseFrom)
+                .toList();
+    }
+
+    public void approve(final Long id) {
+        final Doctor doctor = this.doctorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Doctor not found"));
+        doctor.setAccountStatus(AccountStatus.ACTIVE);
+        this.doctorRepository.save(doctor);
+    }
+
+    public void reject(final Long id) {
+        final Doctor doctor = this.doctorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Doctor not found"));
+        doctor.setAccountStatus(AccountStatus.DISABLED);
+        this.doctorRepository.save(doctor);
+    }
+
     public DoctorResponseDTO findById(final Long id) {
         return new DoctorResponseDTO(this.doctorRepository.getReferenceById(id));
     }

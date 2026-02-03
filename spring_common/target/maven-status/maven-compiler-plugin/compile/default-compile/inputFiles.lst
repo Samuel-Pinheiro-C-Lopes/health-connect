@@ -19,3 +19,4 @@
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/user/clients/UserClient.java
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/user/dtos/CommonUserBindRequestDTO.java
 /var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/user/dtos/CommonUserResponseDTO.java
+/var/home/slopes/eclipse-workspace/inf012_assignment/spring_common/src/main/java/io/github/samuel_pinheiro_c_lopes/spring_common/user/dtos/CommonUserRolesRequestDTO.java

@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +24,16 @@ import io.github.samuel_pinheiro_c_lopes.userservice.repositories.RoleRepository
 import io.github.samuel_pinheiro_c_lopes.userservice.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 
+
 @Service
-public class UserService {
+public class UserService implements UserDetailsService{
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final String adminRole;
 	private final String doctorRole;
 	private final String patientRole;
-
+	
 	@Autowired
 	public UserService(
 			final UserRepository userRepository, 
@@ -44,6 +48,12 @@ public class UserService {
 		this.adminRole = adminRole;
 		this.patientRole = patientRole;
 		this.doctorRole = doctorRole;
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return this.userRepository.findUserByEmailIgnoreCase(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 	}
 	
 	public List<UserResponseDTO> findAll() {
@@ -62,7 +72,7 @@ public class UserService {
 	
 	public UserResponseDTO findByEmail(final String email) {
 		return this.userRepository
-				.findUserByEmail(email)
+				.findUserByEmailIgnoreCase(email)
 				.map(UserResponseDTO::new)
 				.orElseThrow(() -> new EntityNotFoundException());
 	}
@@ -88,7 +98,7 @@ public class UserService {
 	public UserResponseDTO findCurrentlyLoggedIn() {
 		// finds authenticated user
 		final String userEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		final User user = this.userRepository.findUserByEmail(userEmail).orElseThrow(() -> new EntityNotFoundException());
+		final User user = this.userRepository.findUserByEmailIgnoreCase(userEmail).orElseThrow(() -> new EntityNotFoundException());
 		
 		// returns it
 		return new UserResponseDTO(user);

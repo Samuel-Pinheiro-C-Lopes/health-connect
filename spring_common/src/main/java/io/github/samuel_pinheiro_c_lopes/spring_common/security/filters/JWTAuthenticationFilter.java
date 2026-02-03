@@ -31,6 +31,14 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 			final HttpServletResponse response, 
 			final FilterChain filterChain
 	) throws ServletException, IOException {
+		final String requestURI = request.getRequestURI();
+		
+		// Skip JWT processing for login endpoint (may come through gateway with /userservice prefix)
+		if (requestURI.endsWith("/authentication/login") || requestURI.endsWith("/user")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+		
 		final String token = this.retrieveToken(request);
 		
 		if (token != null)

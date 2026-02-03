@@ -35,7 +35,7 @@ public class SecurityConfiguration {
 				.httpBasic(httpBasic -> httpBasic.disable())
 	            .formLogin(formLogin -> formLogin.disable())
 				.csrf(csrf -> csrf.disable())
-				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+				.csrf(csrf -> csrf.disable())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();

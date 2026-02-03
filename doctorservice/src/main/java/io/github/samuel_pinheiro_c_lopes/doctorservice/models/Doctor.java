@@ -38,6 +38,7 @@ public class Doctor {
 		this.personId = personId;
 		this.crm = crm;
 		this.specialty = specialty;
+		this.accountStatus = AccountStatus.PENDING;
 	}
 
 	public Long getId() {

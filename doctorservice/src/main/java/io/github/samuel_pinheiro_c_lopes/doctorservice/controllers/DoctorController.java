@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorFullResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.services.DoctorService;
@@ -37,6 +39,38 @@ public class DoctorController {
     @PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
     public ResponseEntity<List<DoctorResponseDTO>> findAll() {
         return ResponseEntity.ok(this.doctorService.findAll());
+    }
+
+    @GetMapping("/full")
+    @PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+    public ResponseEntity<List<DoctorFullResponseDTO>> findAllFull() {
+        return ResponseEntity.ok(this.doctorService.findAllFull());
+    }
+
+    @GetMapping("/active/full")
+    @PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+    public ResponseEntity<List<DoctorFullResponseDTO>> findAllActiveFull() {
+        return ResponseEntity.ok(this.doctorService.findAllActiveFull());
+    }
+
+    @GetMapping("/pending")
+    @PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+    public ResponseEntity<List<DoctorFullResponseDTO>> findAllPending() {
+        return ResponseEntity.ok(this.doctorService.findAllPending());
+    }
+
+    @PatchMapping("/{id}/approve")
+    @PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+    public ResponseEntity<Void> approve(@PathVariable final Long id) {
+        this.doctorService.approve(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/reject")
+    @PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+    public ResponseEntity<Void> reject(@PathVariable final Long id) {
+        this.doctorService.reject(id);
+        return ResponseEntity.noContent().build();
     }
   
     
