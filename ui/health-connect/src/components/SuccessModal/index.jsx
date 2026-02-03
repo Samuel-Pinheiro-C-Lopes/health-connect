@@ -1,4 +1,4 @@
-import "./success-styles.css";
+import "./styles.css";
 
 function SuccessModal({ isOpen, message, onClose, title }) {
     if (!isOpen || !message) {
