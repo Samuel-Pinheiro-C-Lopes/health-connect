@@ -19,7 +19,6 @@ function getStatusLabel(status) {
     if (status === "CANCELED") return "Cancelada";
     return status ?? "—";
 }
-
 function DoctorHome() {
     const navigate = useNavigate();
     const [token, setToken] = useState(null);
@@ -36,7 +35,7 @@ function DoctorHome() {
         }
         const role = (sessionStorage.getItem(STORAGE_KEYS.ROLE) || "").toUpperCase();
         if (role.includes("PATIENT") || role.includes("PACIENTE")) {
-            navigate("/inicio", { replace: true });
+            navigate("/", { replace: true });
             return;
         }
         setToken(t);

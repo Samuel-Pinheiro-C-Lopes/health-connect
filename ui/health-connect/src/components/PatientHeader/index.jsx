@@ -32,7 +32,7 @@ export default function PatientHeader({ activePage = "inicio" }) {
                 </Link>
             </nav>
             <div className="patient-header-right">
-                <span className="patient-header-avatar">👤</span>
+                <Link to="/" className="patient-header-avatar">↩️</Link>
             </div>
         </header>
     );

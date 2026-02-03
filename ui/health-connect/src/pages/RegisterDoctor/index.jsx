@@ -4,6 +4,7 @@ import imageRegisterDoctor from "../../assets/images/image_register_doctor.png";
 import ErrorModal from "../../components/ErrorModal";
 import SuccessModal from "../../components/SuccessModal";
 import { createDoctor } from "../../command/doctorCommand";
+import { STORAGE_KEYS } from "../../config/constants";
 
 function RegisterDoctor() {
     const navigate = useNavigate();
@@ -89,8 +90,8 @@ function RegisterDoctor() {
 
     const handleSuccessClose = () => {
         setShowSuccess(false);
-        setFormData({ crm: '', specialty: '' });
-        navigate('/home-doctor');
+    
+        navigate('/home-medico');
     };
 
     return (
