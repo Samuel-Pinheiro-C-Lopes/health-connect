@@ -24,3 +24,21 @@ export const ADMIN_LABELS = {
     APPROVE: "Aprovar",
     REJECT: "Rejeitar",
 };
+
+export const PATIENT_HOME_LABELS = {
+    APP_NAME: "Health Connect",
+    INICIO: "Início",
+    MINHAS_CONSULTAS: "Minhas Consultas",
+    PERFIL: "Perfil",
+    SEARCH_PLACEHOLDER: "Qual especialista você procura hoje?",
+    ESPECIALIDADE: "Especialidade",
+    DATA: "Data",
+    SUA_PROXIMA_CONSULTA: "Sua Próxima Consulta",
+    HORARIO: "Horário",
+    CONSULTA: "Consulta",
+    DATA_MARCADA: "Data de marcação",
+    CANCELAR_AGENDAMENTO: "Cancelar agendamento",
+    AGENDAR: "Agendar",
+    AMANHA: "Amanhã",
+    NENHUMA_CONSULTA: "Você não possui consultas agendadas.",
+};

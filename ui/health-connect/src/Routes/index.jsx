@@ -6,9 +6,8 @@ import RegisterDoctor from '../pages/RegisterDoctor';
 import ForgotPassword from '../pages/Forgotpassword';
 import AdminManagement from '../pages/AdminManagement';
 import OptionsLogin from '../pages/OptionsLogin';
-import ProtectedRoute from '../components/ProtectedRoute';
+import PatientHome from '../pages/PatientHome';
 import TokenNonAdminRoute from '../components/TokenNonAdminRoute';
-import AdminManagement from '../pages/AdminManagement';
 
 function AppRoutes() {
   return (
@@ -19,7 +18,14 @@ function AppRoutes() {
             <Route path="admin" element={<AdminManagement />} />
             <Route path="cadastrar" element={<RegisterPerson/>}/>
             <Route path="opcoes-login" element={<OptionsLogin/>} />
-            <Route path="admin" element={<AdminManagement />} />
+            <Route
+              path="inicio"
+              element={
+                <TokenNonAdminRoute>
+                  <PatientHome />
+                </TokenNonAdminRoute>
+              }
+            />
             <Route
               path="cadastrar-paciente"
               element={

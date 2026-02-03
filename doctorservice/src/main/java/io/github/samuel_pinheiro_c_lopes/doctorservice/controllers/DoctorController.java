@@ -48,7 +48,7 @@ public class DoctorController {
     }
 
     @GetMapping("/active/full")
-    @PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<DoctorFullResponseDTO>> findAllActiveFull() {
         return ResponseEntity.ok(this.doctorService.findAllActiveFull());
     }

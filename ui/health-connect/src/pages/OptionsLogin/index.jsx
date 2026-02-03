@@ -30,7 +30,7 @@ function OptionsLogin() {
         const token = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
         if (!token) return navigate('/');
         if (hasRole('PATIENT')) {
-            return navigate('/');
+            return navigate('/inicio');
         }
         return navigate('/cadastrar-paciente');
     };

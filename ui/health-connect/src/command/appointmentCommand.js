@@ -26,7 +26,20 @@ export async function updateAppointment(token, appointmentId, appointmentData) {
 
 export async function deleteAppointment(token, appointmentId) {
     try {
-        const response = await api.delete(`${appointmentBase}/${appointmentId}`, getAuthHeader(token));
+        await api.delete(`${appointmentBase}/${appointmentId}`, getAuthHeader(token));
+        return { success: true, statusCode: 200 };
+    } catch (e) {
+        return { success: false, message: e.message, statusCode: e.response?.status || 500 };
+    }
+}
+
+export async function cancelAppointment(token, appointmentId, reason) {
+    try {
+        await api.patch(
+            `${appointmentBase}/${appointmentId}`,
+            { reason },
+            getAuthHeader(token)
+        );
         return { success: true, statusCode: 200 };
     } catch (e) {
         return { success: false, message: e.message, statusCode: e.response?.status || 500 };
