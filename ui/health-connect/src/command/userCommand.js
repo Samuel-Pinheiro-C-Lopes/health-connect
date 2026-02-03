@@ -37,15 +37,6 @@ export async function updateUser(token, userId, newCredentials) {
     }
 }
 
-export async function listUsers(token) {
-    try {
-        const response = await api.get("user", getAuthHeader(token));
-        return { success: true, data: response.data };
-    } catch (e) {
-        return { success: false, message: e.message };
-    }
-}
-
 export async function deleteUser(token, userId) {
     try {
         const response = await api.delete(`user/${userId}`, getAuthHeader(token));
