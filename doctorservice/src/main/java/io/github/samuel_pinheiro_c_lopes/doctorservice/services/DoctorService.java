@@ -13,6 +13,7 @@ import io.github.samuel_pinheiro_c_lopes.doctorservice.repositories.DoctorReposi
 import io.github.samuel_pinheiro_c_lopes.spring_common.person.clients.PersonClient;
 import io.github.samuel_pinheiro_c_lopes.spring_common.general.enums.AccountStatus;
 import io.github.samuel_pinheiro_c_lopes.spring_common.person.dtos.CommonPersonBindPatchDTO;
+import io.github.samuel_pinheiro_c_lopes.spring_common.person.dtos.CommonPersonResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -82,9 +83,26 @@ public class DoctorService {
 			Long patientId,
 			Long doctorId
 		) implements CommonPersonBindPatchDTO { }
+	
 
-	public DoctorFullResponseDTO findCurrentlyLoggedIn() {
-
-		return null;
+	private DoctorFullResponseDTO getDoctorFullResponseFrom(final Doctor doctor) {
+		final CommonPersonResponseDTO person = this.personClient.findByDoctorId(doctor.getId());
+		
+		return new DoctorFullResponseDTO(
+				doctor.getId(),
+				person.id(),
+				doctor.getCrm(),
+				doctor.getSpecialty(),
+				person.name(),
+				person.phone(),
+				person.userId(),
+				person.postalCode(),
+				person.avenue(),
+				person.complement(),
+				person.number(),
+				person.city(),
+				person.district(),
+				person.state()
+		);
 	}
 }

@@ -10,8 +10,6 @@ public record DoctorFullResponseDTO(
 		String name,
 		String phone,
 		Long userId,
-		Long patientId,
-		Long doctorId,
 		String postalCode, 
 		String avenue, 
 		String complement, 

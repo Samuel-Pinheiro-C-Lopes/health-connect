@@ -1,0 +1,54 @@
+### Build Output (Maven & Gradle) ###
+target/
+build/
+bin/
+out/
+.gradle/
+.mvn/
+!mvnw
+!mvnw.cmd
+
+### IDE Files (IntelliJ, Eclipse, VS Code) ###
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+*.sublime-workspace
+
+### Logs and Temp Files ###
+*.log
+*.log.*
+logs/
+temp/
+*.tmp
+
+### OS Files ###
+.DS_Store
+Thumbs.db
+
+### Configuration Files ###
+# -----------------------------------------------------
+# ALLOW application.properties as requested
+# -----------------------------------------------------
+# We deliberately DO NOT list application.properties here.
+# If you previously had a rule ignoring it, use the line below to force-include it:
+!src/main/resources/application.properties
+!src/main/resources/application.yml
+
+# -----------------------------------------------------
+# STILL IGNORE purely secret configs (Recommended)
+# -----------------------------------------------------
+# It is good practice to ignore profiles meant for local secrets
+application-secret.properties
+application-secret.yml
+application-prod.properties
+.env
+*.key
+*.p12
+*.jks

@@ -114,4 +114,8 @@ public class PersonService {
 		// returns it
 		return new PersonResponseDTO(user.getPerson());
 	}
+
+	public PersonResponseDTO findByEmail(String email) {
+		return new PersonResponseDTO(this.userRepository.findUserByEmail(email).getPerson());
+	}
 }

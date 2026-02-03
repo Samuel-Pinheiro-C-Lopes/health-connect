@@ -23,6 +23,9 @@ public interface PersonClient {
 	@GetMapping("/patient/{patientId}")
 	public CommonPersonResponseDTO findByPatientId(@PathVariable("patientId") final Long patientId);
 	
+	@GetMapping("/email/{email}")
+	public CommonPersonResponseDTO findByEmail(@PathVariable("email") final String email);
+	
 	@PatchMapping("/{id}")
 	public CommonPersonResponseDTO patch(
 		@PathVariable("id") final Long id, 

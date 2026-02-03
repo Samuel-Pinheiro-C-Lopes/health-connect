@@ -55,6 +55,12 @@ public class PersonController {
 			return ResponseEntity.ok(this.personService.findById(id));
 		}
 		
+		@GetMapping("/email/{email}")
+		@PreAuthorize("isAuthenticated()")
+		public ResponseEntity<PersonResponseDTO> findByEmail(@PathVariable final String email) {
+			return ResponseEntity.ok(this.personService.findByEmail(email));
+		}
+		
 		@GetMapping("/doctor/{doctorId}")
 		@PreAuthorize("isAuthenticated()")
 		public ResponseEntity<PersonResponseDTO> findByDoctorId(@PathVariable final Long doctorId) {

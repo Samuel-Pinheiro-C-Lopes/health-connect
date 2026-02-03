@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorFullResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.services.DoctorService;
@@ -39,12 +38,7 @@ public class DoctorController {
     public ResponseEntity<List<DoctorResponseDTO>> findAll() {
         return ResponseEntity.ok(this.doctorService.findAll());
     }
-    
-    @GetMapping("/loggedIn")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<DoctorFullResponseDTO> findCurrentlyLoggedIn() {
-        return ResponseEntity.ok(this.doctorService.findCurrentlyLoggedIn());
-    }
+  
     
 	@GetMapping("/active")
 	@PreAuthorize("isAuthenticated()") 
