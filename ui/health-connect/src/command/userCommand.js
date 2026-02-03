@@ -1,8 +1,5 @@
 import api from "../api/api";
-
-const getAuthHeader = (token) => ({
-    headers: { Authorization: `Bearer ${token}` }
-});
+import { getAuthHeader } from "../utils/httpUtils";
 
 export async function registerUser(email, password) {
     try {
