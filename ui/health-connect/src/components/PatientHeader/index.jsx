@@ -24,9 +24,14 @@ export default function PatientHeader({ activePage = "inicio" }) {
                 >
                     {PATIENT_HOME_LABELS.MINHAS_CONSULTAS}
                 </Link>
+                <Link
+                    to="/perfil"
+                    className={`patient-header-nav-link ${activePage === "perfil" ? "active" : ""}`}
+                >
+                    {PATIENT_HOME_LABELS.PERFIL}
+                </Link>
             </nav>
             <div className="patient-header-right">
-                <span className="patient-header-perfil">{PATIENT_HOME_LABELS.PERFIL}</span>
                 <span className="patient-header-avatar">👤</span>
             </div>
         </header>
