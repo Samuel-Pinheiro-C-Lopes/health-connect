@@ -4,7 +4,8 @@ import { useState } from "react";
 import { validateEmail } from "../../utils/validations";
 import ErrorModal from "../../components/ErrorModal";
 import SuccessModal from "../../components/SuccessModal";
-import { registerUserAsync } from "../../command/userCommand";
+import { registerUserAsync, loginAsync, createPersonAsync } from "../../command/userCommand";
+import { STORAGE_KEYS } from "../../config/constants";
 
 function RegisterPerson(){
     const [formData, setFormData] = useState({
@@ -127,6 +128,61 @@ function RegisterPerson(){
         return newErrors.length === 0;
     };
 
+    const registerUser = async () => {
+        const result = await registerUserAsync(formData.email, formData.senha);
+        if (!result.success) {
+            setErrors([result.message || 'Erro ao criar conta']);
+            setShowErrors(true);
+            return false;
+        }
+
+        return true;
+    }
+
+    const login = async () => {
+        const result = await loginAsync(formData.email, formData.senha);
+        if (!result.success) {
+            setErrors([result.message || 'Erro ao fazer login']);
+            setShowErrors(true);
+            return false;
+        }
+
+        const token = result.data.token;
+        sessionStorage.setItem(STORAGE_KEYS.TOKEN, token);
+        return true;
+    }
+
+    const registerPerson = async () => {
+        const token = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
+        if (!token) {
+            setErrors(['Erro ao recuperar token de autenticação']);
+            setShowErrors(true);
+            return false;
+        }
+
+        const personData = {
+            name: formData.nome,
+            phone: formData.telefone ? formData.telefone.replace(/\D/g, '') : '',
+            postalCode: formData.cep,
+            avenue: formData.logradouro,
+            complement: formData.complemento,
+            number: formData.numeroEndereco,
+            city: formData.cidade,
+            district: formData.bairro,
+            state: formData.uf ? formData.uf.toUpperCase() : ''
+        };
+
+        const result = await createPersonAsync(token, personData);
+        if (!result.success) {
+            setErrors([result.message || 'Erro ao criar pessoa']);
+            setShowErrors(true);
+            return false;
+        }
+        const personId = result.data.id;
+        sessionStorage.setItem(STORAGE_KEYS.PERSON_ID, personId);
+        return true;
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const isValid = validateForm();
@@ -138,14 +194,22 @@ function RegisterPerson(){
         setShowErrors(false);
 
         try {
-            const result = await registerUserAsync(formData.email, formData.senha);
-            if (result.success) {
-                setSuccessMessage("Conta criada com sucesso!");
-                setShowSuccess(true);
-            } else {
-                setErrors([result.message || 'Erro ao criar conta']);
-                setShowErrors(true);
+            if(!await registerUser()){
+                setLoading(false);
+                return;
             }
+
+            if(!await login()){
+                setLoading(false);
+                return;
+            }
+
+            if(!await registerPerson()){
+                setLoading(false);
+                return;
+            }
+            setSuccessMessage('Cadastro realizado com sucesso!');
+            setShowSuccess(true);
         } catch (err) {
             setErrors([err.message || 'Erro desconhecido']);
             setShowErrors(true);
