@@ -1,0 +1,115 @@
+.success-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.success-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    /* Reduzi um pouco o max-width (de 500px para 450px) 
+       para ficar mais harmônico com textos curtos */
+    max-width: 450px; 
+    /* Altura automática baseada no conteúdo, mas com um mínimo 
+       para não ficar achatado */
+    min-height: 200px; 
+    max-height: 80vh;
+    background-color: #fff;
+    border: 2px solid var(--color-success, #28a745);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+        scale: 0.9;
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+        scale: 1;
+    }
+}
+
+.success-modal-header {
+    background-color: var(--color-success, #28a745);
+    color: #fff;
+    padding: 16px 20px;
+    font-weight: 600;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}
+
+/* NOVA CLASSE: Substitui a antiga lista */
+.success-modal-content {
+    flex: 1; /* Ocupa todo o espaço disponível entre header e footer */
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+    padding: 30px 24px; /* Padding generoso para "respiro" */
+    text-align: center;
+    width: 100%;
+}
+
+.success-modal-content p {
+    margin: 0;
+    font-size: 1.3rem; /* Texto levemente maior para destaque único */
+    color: var(--color-text-main, #333);
+    line-height: 1.5;
+}
+
+.success-modal-footer {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--color-border, #e0e0e0);
+    background-color: var(--color-bg-page, #f9f9f9);
+    width: 100%;
+}
+
+.success-modal-ok-button {
+    background-color: var(--color-primary, #0077b6);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 40px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.success-modal-ok-button:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.success-modal-ok-button:active {
+    transform: translateY(0);
+}
