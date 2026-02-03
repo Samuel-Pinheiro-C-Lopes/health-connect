@@ -1,6 +1,7 @@
 import api from "../api/api"; 
 import { getAuthHeader } from "../utils/httpUtils";
 
+
 export async function listAppointments(token) {
     try {
         const response = await api.get("appointment", getAuthHeader(token));
@@ -10,9 +11,10 @@ export async function listAppointments(token) {
     }
 }
 
+
 export async function getAppointment(token, appointmentId) {
     try {
-        
+    
         const response = await api.get(`appointment/${appointmentId}`, getAuthHeader(token));
         return { success: true, data: response.data };
     } catch (e) {
