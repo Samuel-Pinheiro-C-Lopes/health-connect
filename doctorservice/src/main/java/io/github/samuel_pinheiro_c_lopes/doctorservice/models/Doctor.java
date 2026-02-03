@@ -29,7 +29,7 @@ public class Doctor {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private AccountStatus accountStatus;
-	
+
 	public Doctor() {
 		// JPA
 	}
@@ -70,5 +70,13 @@ public class Doctor {
 
 	public void setSpecialty(final Specialty specialty) {
 		this.specialty = specialty;
+	}
+	
+	public AccountStatus getAccountStatus() {
+		return accountStatus;
+	}
+	
+	public void setAccountStatus(AccountStatus accountStatus) {
+		this.accountStatus = accountStatus;
 	}
 }

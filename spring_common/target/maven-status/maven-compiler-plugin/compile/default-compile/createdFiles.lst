@@ -1,0 +1,15 @@
+io/github/samuel_pinheiro_c_lopes/spring_common/security/configurations/FeignClientInterceptorConfiguration.class
+io/github/samuel_pinheiro_c_lopes/spring_common/security/configurations/CommonSecurityAutoConfiguration.class
+io/github/samuel_pinheiro_c_lopes/spring_common/patient/dtos/CommonPatientResponseDTO.class
+io/github/samuel_pinheiro_c_lopes/spring_common/documentation/SwaggerConfiguration.class
+io/github/samuel_pinheiro_c_lopes/spring_common/doctor/enums/Specialty.class
+io/github/samuel_pinheiro_c_lopes/spring_common/security/services/JWTService.class
+io/github/samuel_pinheiro_c_lopes/spring_common/person/dtos/CommonPersonResponseDTO.class
+io/github/samuel_pinheiro_c_lopes/spring_common/appointment/enums/AppointmentStatus.class
+io/github/samuel_pinheiro_c_lopes/spring_common/App.class
+io/github/samuel_pinheiro_c_lopes/spring_common/security/filters/JWTAuthenticationFilter.class
+io/github/samuel_pinheiro_c_lopes/spring_common/person/clients/PersonClient.class
+io/github/samuel_pinheiro_c_lopes/spring_common/security/configurations/RolesConfiguration.class
+io/github/samuel_pinheiro_c_lopes/spring_common/doctor/clients/DoctorClient.class
+io/github/samuel_pinheiro_c_lopes/spring_common/doctor/dtos/CommonDoctorResponseDTO.class
+io/github/samuel_pinheiro_c_lopes/spring_common/security/interceptors/FeignClientInterceptor.class

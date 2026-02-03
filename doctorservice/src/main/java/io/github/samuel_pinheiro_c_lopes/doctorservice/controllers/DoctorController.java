@@ -9,14 +9,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorFullResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.dtos.DoctorResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.doctorservice.services.DoctorService;
@@ -34,43 +35,53 @@ public class DoctorController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager)")
+    @PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
     public ResponseEntity<List<DoctorResponseDTO>> findAll() {
         return ResponseEntity.ok(this.doctorService.findAll());
     }
     
+    @GetMapping("/loggedIn")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<DoctorFullResponseDTO> findCurrentlyLoggedIn() {
+        return ResponseEntity.ok(this.doctorService.findCurrentlyLoggedIn());
+    }
+    
 	@GetMapping("/active")
+	@PreAuthorize("isAuthenticated()") 
 	public ResponseEntity<List<DoctorResponseDTO>> findAllActive() {
 		return ResponseEntity.ok(this.doctorService.findAllActive());
 	}
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager) or hasAuthority(@rolesConfiguration.doctor)")
+    @PreAuthorize("isAuthenticated()") 
     public ResponseEntity<DoctorResponseDTO> findById(@PathVariable final Long id) {
         return ResponseEntity.ok(this.doctorService.findById(id));
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager)")
+    @PreAuthorize("isAuthenticated()") 
     public ResponseEntity<DoctorResponseDTO> save(@Valid @RequestBody final DoctorRequestDTO doctorRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.doctorService.save(doctorRequest));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager)")
+    @PreAuthorize("hasAnyAuthority(@rolesConfiguration.admin, @rolesConfiguration.doctor)")
     public ResponseEntity<DoctorResponseDTO> update(
             @PathVariable final Long id,
             @Valid @RequestBody final DoctorRequestDTO doctorRequest
     ) {
         return ResponseEntity.ok(this.doctorService.update(id, doctorRequest));
     }
-    
-
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager)")
-    public ResponseEntity<Void> delete(@PathVariable final Long id) {
-        this.doctorService.delete(id);
+    @PreAuthorize("hasAnyAuthority(@rolesConfiguration.doctor, @rolesConfiguration.admin) and (!#permanent or hasAuthority(@rolesConfiguration.admin))")
+    public ResponseEntity<Void> delete(
+			@PathVariable final Long id,
+			@RequestParam(defaultValue = "false") boolean permanent
+	) {
+    	if (permanent) this.doctorService.delete(id);
+    	else this.doctorService.deactivate(id);
+    	
         return ResponseEntity.noContent().build();
     }
 }

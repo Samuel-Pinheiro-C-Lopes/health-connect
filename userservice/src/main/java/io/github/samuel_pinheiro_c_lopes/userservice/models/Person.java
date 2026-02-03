@@ -55,6 +55,22 @@ public class Person {
 		);
 	}
 	
+	public Person(
+			String name,
+			Long userId,
+			String phone,
+			String city,
+			String district,
+			String state,
+			String postalCode,
+			String avenue,
+			String number,
+			String complement
+	) {
+		this(name, phone, city, district, state, postalCode, avenue, number, complement);
+		this.user = new User(userId);
+	}
+	
 	public Long getId() {
 		return id;
 	}

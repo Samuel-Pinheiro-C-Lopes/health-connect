@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientFullResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.services.PatientService;
@@ -30,24 +32,25 @@ public class PatientController {
 	}
 	
 	@GetMapping
-	@PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager) or hasAuthority(@rolesConfiguration.doctor)")
-	public ResponseEntity<List<PatientResponseDTO>> findAll() {
+	@PreAuthorize("hasAnyAuthority(@rolesConfiguration.admin)")
+	public ResponseEntity<List<PatientFullResponseDTO>> findAll() {
 		return ResponseEntity.ok(this.patientService.findAll());
 	}
 	
 	@GetMapping("/active")
-	public ResponseEntity<List<PatientResponseDTO>> findAllActive() {
+	@PreAuthorize("isAuthenticated()")
+	public ResponseEntity<List<PatientFullResponseDTO>> findAllActive() {
 		return ResponseEntity.ok(this.patientService.findAllActive());
 	}
 	
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager) or hasAuthority(@rolesConfiguration.doctor)")
-	public ResponseEntity<PatientResponseDTO> findById(@PathVariable final Long id) {
+	@PreAuthorize("isAuthenticated()")
+	public ResponseEntity<PatientFullResponseDTO> findById(@PathVariable final Long id) {
 		return ResponseEntity.ok(this.patientService.findById(id));
 	}
 	
 	@PostMapping
-	@PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager)")
+	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<PatientResponseDTO> save(
 			@RequestBody final PatientRequestDTO userRequest
 	) {
@@ -55,7 +58,7 @@ public class PatientController {
 	}
 	
 	@PutMapping("/{id}")
-	@PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager)")
+	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<PatientResponseDTO> update(
 			@PathVariable final Long id, 
 			@RequestBody final PatientRequestDTO userRequest
@@ -64,11 +67,14 @@ public class PatientController {
 	}
 	
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAuthority(@rolesConfiguration.admin) or hasAuthority(@rolesConfiguration.manager)")
+	@PreAuthorize("isAuthenticated() and (!#permanent or hasAuthority(@rolesConfiguration.admin))")
 	public ResponseEntity<Void> delete(
-			@PathVariable final Long id
+			@PathVariable final Long id,
+			@RequestParam(defaultValue = "false") boolean permanent
 	) {
-		this.patientService.delete(id);
+		if (permanent) this.patientService.delete(id);
+		else this.patientService.deactivate(id);
+		
 		return ResponseEntity.noContent().build();
 	}
 }

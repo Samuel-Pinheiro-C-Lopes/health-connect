@@ -20,8 +20,8 @@ import io.github.samuel_pinheiro_c_lopes.spring_common.appointment.enums.Appoint
 import io.github.samuel_pinheiro_c_lopes.spring_common.doctor.clients.DoctorClient;
 import io.github.samuel_pinheiro_c_lopes.spring_common.doctor.dtos.CommonDoctorResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.spring_common.patient.clients.PatientClient;
-import io.github.samuel_pinheiro_c_lopes.spring_common.patient.dtos.CommonPatientResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.spring_common.person.clients.PersonClient;
+import io.github.samuel_pinheiro_c_lopes.spring_common.patient.dtos.CommonPatientResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.spring_common.person.dtos.CommonPersonResponseDTO;
 
 @Service

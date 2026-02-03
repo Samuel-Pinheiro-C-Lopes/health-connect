@@ -48,4 +48,13 @@ public class Patient {
 	public void setPersonId(Long personId) {
 		this.personId = personId;
 	}
+
+	public AccountStatus getAccountStatus() {
+		return accountStatus;
+	}
+
+	public void setAccountStatus(AccountStatus accountStatus) {
+		this.accountStatus = accountStatus;
+	}
+	
 }

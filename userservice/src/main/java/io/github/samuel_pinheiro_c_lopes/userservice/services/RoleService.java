@@ -23,11 +23,10 @@ public class RoleService {
 			final RoleRepository roleRepository,
 	        @Value("${app.security.roles.admin}") final String adminRole,
 	        @Value("${app.security.roles.doctor}") final String doctorRole,
-	        @Value("${app.security.roles.patient}") final String patientRole,
-	        @Value("${app.security.roles.manager}") final String managerRole
+	        @Value("${app.security.roles.patient}") final String patientRole
 	) {
 		this.roleRepository = roleRepository;
-		this.availableRoles = Set.of(adminRole, doctorRole, patientRole, managerRole);
+		this.availableRoles = Set.of(adminRole, doctorRole, patientRole);
 	}
 	
 	public List<RoleResponseDTO> findAll() {

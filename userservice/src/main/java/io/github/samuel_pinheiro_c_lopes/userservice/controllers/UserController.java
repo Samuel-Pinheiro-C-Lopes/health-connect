@@ -36,8 +36,13 @@ public class UserController {
 		return ResponseEntity.ok(this.userService.findAll());
 	}
 	
+	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
+	public ResponseEntity<UserResponseDTO> findById(@PathVariable final Long id) {
+		return ResponseEntity.ok(this.userService.findById(id));
+	}
+	
 	@PostMapping
-	//@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
 	public ResponseEntity<UserResponseDTO> save(
 			@RequestBody final UserRequestDTO userRequest
 	) {
@@ -45,7 +50,6 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	//@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
 	public ResponseEntity<UserResponseDTO> update(
 			@PathVariable final Long id, 
 			@RequestBody final UserRequestDTO userRequest
@@ -63,6 +67,7 @@ public class UserController {
 		
 	}
 	
+	/*
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasAuthority(@rolesConfiguration.admin)")
 	public ResponseEntity<Void> delete(
@@ -71,4 +76,5 @@ public class UserController {
 		this.userService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+	*/
 }

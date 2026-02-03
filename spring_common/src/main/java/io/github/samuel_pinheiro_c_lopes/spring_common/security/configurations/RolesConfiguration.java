@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "app.security.roles")
 public class RolesConfiguration {
-	private static final String PREFIX = "";//"ROLE_";
+	private static final String PREFIX = "";
 	private String admin;
-	private String user;
-	private String manager;
+	private String patient;
+	private String doctor;
 	
 	public String getAdmin() {
 		return PREFIX + admin;
@@ -17,16 +17,16 @@ public class RolesConfiguration {
 	public void setAdmin(String admin) {
 		this.admin = admin;
 	}
-	public String getUser() {
-		return PREFIX + user;
+	public String getPatient() {
+		return PREFIX + patient;
 	}
-	public void setUser(String user) {
-		this.user = user;
+	public void setPatient(String patient) {
+		this.patient = patient;
 	}
-	public String getManager() {
-		return PREFIX + manager;
+	public String getDoctor() {
+		return PREFIX + doctor;
 	}
-	public void setManager(String manager) {
-		this.manager = manager;
+	public void setDoctor(String doctor) {
+		this.doctor = doctor;
 	}
 }

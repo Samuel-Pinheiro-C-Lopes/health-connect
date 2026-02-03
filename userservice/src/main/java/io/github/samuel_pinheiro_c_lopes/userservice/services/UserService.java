@@ -1,15 +1,11 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.services;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.samuel_pinheiro_c_lopes.userservice.dtos.role.RoleResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.dtos.user.UserRolesRequestDTO;
@@ -43,6 +39,13 @@ public class UserService {
 				.stream()
 				.map(u -> new UserResponseDTO(u))
 				.toList();
+	}
+	
+	public UserResponseDTO findById(final Long id) {
+		return this.userRepository
+				.findById(id)
+				.map(UserResponseDTO::new)
+				.orElseThrow(() -> new EntityNotFoundException());
 	}
 	
 	public UserResponseDTO update(final Long id, final UserRequestDTO userRequest) {

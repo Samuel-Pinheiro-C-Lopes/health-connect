@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Person;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
-import io.github.samuel_pinheiro_c_lopes.userservice.broker.dtos.PersonBindDTO;
+import io.github.samuel_pinheiro_c_lopes.userservice.dtos.person.PersonBindPatchDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.dtos.person.PersonRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.dtos.person.PersonResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Address;
@@ -40,6 +40,19 @@ public class PersonService {
 		return new PersonResponseDTO(this.personRepository.save(person));
 	}
 	
+	public PersonResponseDTO saveCurrentlyLoggedIn(final PersonRequestDTO personRequest) {
+		// gets model
+		final Person person = personRequest.toPerson();
+		
+		// finds authenticated user
+		final String userEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		final User user = this.userRepository.findUserByEmail(userEmail);
+		person.setUser(user);
+		
+		// persists
+		return new PersonResponseDTO(this.personRepository.save(person));
+	}
+	
 	public PersonResponseDTO findById(final Long id) {
 		return new PersonResponseDTO(this.personRepository.getReferenceById(id));
 	}
@@ -59,25 +72,14 @@ public class PersonService {
 				.toList();
 	}
 	
-	public void bindPerson(final PersonBindDTO personBind) {
-		final Person toBindPerson = this.personRepository.getReferenceById(personBind.personId());
-		boolean binded = false;
+	public PersonResponseDTO bindPerson(final Long id, final PersonBindPatchDTO personBind) {
+		final Person toBindPerson = this.personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 		
-		if (personBind.doctorId() == null && personBind.patientId() == null) 
-			return;
-		
-		if (toBindPerson.getDoctorId() == null) {
-			toBindPerson.setDoctorId(personBind.doctorId());
-			binded = true;
-		}
-		
-		if (toBindPerson.getPatientId() == null) {
-			toBindPerson.setPatientId(personBind.patientId());
-			binded = true;
-		}
-		
-		if (binded) 
-			this.personRepository.save(toBindPerson);
+		if (personBind.doctorId() != null) toBindPerson.setDoctorId(personBind.doctorId());
+
+		if (personBind.patientId() != null)  toBindPerson.setPatientId(personBind.patientId());
+		 
+		return new PersonResponseDTO(this.personRepository.save(toBindPerson));
 	}
 	
 	public PersonResponseDTO update(final Long id, final PersonRequestDTO userRequest) {
