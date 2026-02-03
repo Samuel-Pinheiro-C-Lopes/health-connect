@@ -9,6 +9,7 @@ import OptionsLogin from '../pages/OptionsLogin';
 import PatientHome from '../pages/PatientHome';
 import PatientAppointments from '../pages/PatientAppointments';
 import TokenNonAdminRoute from '../components/TokenNonAdminRoute';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 function AppRoutes() {
   return (
@@ -16,7 +17,14 @@ function AppRoutes() {
         <Routes>
             <Route path="/" element={<Login />} />
             <Route path="esqueci-senha" element={<ForgotPassword />} />
-            <Route path="admin" element={<AdminManagement />} />
+            <Route
+              path="admin"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN"]}>
+                  <AdminManagement />
+                </ProtectedRoute>
+              }
+            />
             <Route path="cadastrar" element={<RegisterPerson/>}/>
             <Route path="opcoes-login" element={<OptionsLogin/>} />
             <Route
