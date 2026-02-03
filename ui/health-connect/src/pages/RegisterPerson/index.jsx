@@ -1,8 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import imageRegisterPerson from "../../assets/images/image_register_person.png";
 import { useState } from "react";
 import { validateEmail } from "../../utils/validations";
 import ErrorModal from "../../components/ErrorModal";
+import SuccessModal from "../../components/SuccessModal";
+import { registerUserAsync, loginAsync, createPersonAsync } from "../../command/userCommand";
+import { STORAGE_KEYS } from "../../config/constants";
 
 function RegisterPerson(){
     const [formData, setFormData] = useState({
@@ -29,6 +32,10 @@ function RegisterPerson(){
     const [emailError, setEmailError] = useState(false);
     const [showErrors, setShowErrors] = useState(false);
     const [errors, setErrors] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -121,13 +128,94 @@ function RegisterPerson(){
         return newErrors.length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const registerUser = async () => {
+        const result = await registerUserAsync(formData.email, formData.senha);
+        if (!result.success) {
+            setErrors([result.message || 'Erro ao criar conta']);
+            setShowErrors(true);
+            return false;
+        }
+
+        return true;
+    }
+
+    const login = async () => {
+        const result = await loginAsync(formData.email, formData.senha);
+        if (!result.success) {
+            setErrors([result.message || 'Erro ao fazer login']);
+            setShowErrors(true);
+            return false;
+        }
+
+        const token = result.data.token;
+        sessionStorage.setItem(STORAGE_KEYS.TOKEN, token);
+        return true;
+    }
+
+    const registerPerson = async () => {
+        const token = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
+        if (!token) {
+            setErrors(['Erro ao recuperar token de autenticação']);
+            setShowErrors(true);
+            return false;
+        }
+
+        const personData = {
+            name: formData.nome,
+            phone: formData.telefone ? formData.telefone.replace(/\D/g, '') : '',
+            postalCode: formData.cep,
+            avenue: formData.logradouro,
+            complement: formData.complemento,
+            number: formData.numeroEndereco,
+            city: formData.cidade,
+            district: formData.bairro,
+            state: formData.uf ? formData.uf.toUpperCase() : ''
+        };
+
+        const result = await createPersonAsync(token, personData);
+        if (!result.success) {
+            setErrors([result.message || 'Erro ao criar pessoa']);
+            setShowErrors(true);
+            return false;
+        }
+        const personId = result.data.id;
+        sessionStorage.setItem(STORAGE_KEYS.PERSON_ID, personId);
+        return true;
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const isValid = validateForm();
         if(!isValid){
             return;
         }
-        //Chama a API
+
+        setLoading(true);
+        setShowErrors(false);
+
+        try {
+            if(!await registerUser()){
+                setLoading(false);
+                return;
+            }
+
+            if(!await login()){
+                setLoading(false);
+                return;
+            }
+
+            if(!await registerPerson()){
+                setLoading(false);
+                return;
+            }
+            setSuccessMessage('Cadastro realizado com sucesso!');
+            setShowSuccess(true);
+        } catch (err) {
+            setErrors([err.message || 'Erro desconhecido']);
+            setShowErrors(true);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return(
@@ -266,12 +354,19 @@ function RegisterPerson(){
                         errors={errors}
                         onClose={() => setShowErrors(false)}
                     />
+                    {loading && <p className="loading-text">Enviando requisição... ⏳</p>}
+                    <SuccessModal
+                        isOpen={showSuccess}
+                        message={successMessage}
+                        onClose={() => { setShowSuccess(false); navigate('/'); }}
+                    />
                     <button
                         type="submit"
                         onClick={handleSubmit}
                         className="btn-primary"
+                        disabled={loading}
                     >
-                        Criar Conta
+                        {loading ? 'Carregando...' : 'Criar Conta'}
                     </button>
                     <div className="redirect-container">
                         <p className="page-text">Já tem uma conta? <Link to='/'>Faça login</Link></p>

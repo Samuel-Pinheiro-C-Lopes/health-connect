@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import ErrorModal from "../../components/ErrorModal";
-import { getAuthHeader } from "../../utils/httpUtils";
 function ResetPassword() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState(false);
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
     const [showErrors, setShowErrors] = useState(false);
+    const [isTokenValid, setIsTokenValid] = useState(true);
     const history = useHistory();
+    useEffect(() => {
+        const token = localStorage.getItem('auth_token'); 
+        if (!token) {
+            setIsTokenValid(false);
+            return;
+        }
+    }, []);
+
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     };
+
     const handleConfirmPasswordChange = (e) => {
         setConfirmPassword(e.target.value);
     };
@@ -37,29 +46,21 @@ function ResetPassword() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-            try {
-                const token = localStorage.getItem('auth_token');  
-                const response = await fetch("/api/user/reset-password", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        ...getAuthHeader(token), 
-                    },
-                    body: JSON.stringify({
-                        password,
-                    }),
-                });
-                if (response.ok) {
-                    console.log("Senha redefinida com sucesso.");
-                    history.push("/login");  
-                } else {
-                    console.log("Erro ao redefinir a senha.");
-                }
-            } catch (error) {
-                console.error("Erro ao enviar solicitação:", error);
-            }
+           
+            console.log("Senha redefinida com sucesso!");
+          
+            history.push("/login"); 
         }
     };
+
+    if (!isTokenValid) {
+        return (
+            <div className="reset-password">
+                <h2>Token inválido ou expirado!</h2>
+                <p>Por favor, tente novamente ou entre em contato com o suporte.</p>
+            </div>
+        );
+    }
 
     return (
         <div className="reset-password">

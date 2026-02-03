@@ -1,102 +1,150 @@
 import { useState } from "react";
-import { validateCPF } from "../../utils/validations";
+import { Link } from "react-router-dom";
+import imageRegisterDoctor from "../../assets/images/image_register_doctor.png";
 import ErrorModal from "../../components/ErrorModal";
+import SuccessModal from "../../components/SuccessModal";
+
 function RegisterDoctor() {
-    const [cpf, setCpf] = useState("");
-    const [crm, setCrm] = useState("");
-    const [specialty, setSpecialty] = useState("");
-    const [cpfError, setCpfError] = useState(false);
-    const [crmError, setCrmError] = useState(false);
-    const [specialtyError, setSpecialtyError] = useState(false);
-    const [showErrors, setShowErrors] = useState(false);
-    const handleCpfChange = (e) => {
-        const newValue = e.target.value;
-        setCpf(newValue);
 
-        if (newValue.length > 0) {
-            setCpfError(!validateCPF(newValue));
-        } else {
-            setCpfError(false);
+    const [formData, setFormData] = useState({
+        crm: '',
+        specialty: ''
+    });
+
+    const [formDataValid, setFormDataValid] = useState({
+        crm: true,
+        specialty: true
+    });
+
+    const [errors, setErrors] = useState([]);
+    const [showError, setShowError] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    
+    const specialties = ["Ortopedia", "Cardiologia", "Ginecologia", "Dermatologia"];
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+
+        if (formDataValid[name] === false) {
+            setFormDataValid(prev => ({ ...prev, [name]: true }));
         }
     };
-    const handleCrmChange = (e) => {
-        const newCrm = e.target.value;
-        setCrm(newCrm);
 
-        if (newCrm.length > 0) {
-            setCrmError(false);
-        }
-    };
-    const handleSpecialtyChange = (e) => {
-        const newSpecialty = e.target.value;
-        setSpecialty(newSpecialty);
-
-        if (newSpecialty.length > 0) {
-            setSpecialtyError(false);
-        }
-    };
     const validateForm = () => {
-        let isValid = true;
-        if (!validateCPF(cpf)) {
-            setCpfError(true);
-            isValid = false;
+        const newErrors = [];
+        const newValidState = { crm: true, specialty: true };
+
+        if (!formData.crm || !formData.crm.trim()) {
+            newErrors.push("O campo CRM é obrigatório.");
+            newValidState.crm = false;
         }
-        if (crm.length === 0) {
-            setCrmError(true);
-            isValid = false;
+
+        if (!formData.specialty || formData.specialty === "") {
+            newErrors.push("Por favor, selecione uma especialidade.");
+            newValidState.specialty = false;
         }
-        if (specialty.length === 0) {
-            setSpecialtyError(true);
-            isValid = false;
-        }
-        setShowErrors(!isValid);
-        return isValid;
+
+        setFormDataValid(newValidState);
+        setErrors(newErrors);
+
+        return newErrors.length === 0;
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (validateForm()) {
-            
-            console.log("Cadastro do médico realizado com sucesso!");
+        
+        const isValid = validateForm();
+
+        if (isValid) {
+            setShowSuccess(true);
+            setErrors([]);
+            setShowError(false);
+        } else {
+            setShowError(true);
         }
     };
+
+    const handleSuccessClose = () => {
+        setShowSuccess(false);
+        setFormData({ crm: '', specialty: '' });
+    };
+
     return (
-        <div className="register-doctor">
-            <h2>Cadastro de Médico</h2>
-            {showErrors && <ErrorModal />}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>CPF</label>
-                    <input
-                        type="text"
-                        value={cpf}
-                        onChange={handleCpfChange}
-                        placeholder="Digite o CPF"
-                    />
-                    {cpfError && <span>CPF inválido</span>}
+        <section className="page-split-container">
+            <img 
+                src={imageRegisterDoctor} 
+                alt="Cadastro Médico" 
+                className="page-split-image"
+            />
+            <div className="page-split-content scrollable custom-scrollbar">
+                <div className="page-split-content-text">
+                    <h1 className="page-title">Credenciais Médicas</h1>
+                    <p className="page-subtitle" style={{ marginTop: '8px', color: 'var(--color-text-muted)' }}>
+                        Preencha as informações profissionais para concluir.
+                    </p>
                 </div>
-                <div>
-                    <label>CRM</label>
-                    <input
-                        type="text"
-                        value={crm}
-                        onChange={handleCrmChange}
-                        placeholder="Digite o CRM"
-                    />
-                    {crmError && <span>CRM é obrigatório</span>}
-                </div>
-                <div>
-                    <label>Especialidade</label>
-                    <input
-                        type="text"
-                        value={specialty}
-                        onChange={handleSpecialtyChange}
-                        placeholder="Digite a especialidade"
-                    />
-                    {specialtyError && <span>Especialidade é obrigatória</span>}
-                </div>
-                <button type="submit">Cadastrar</button>
-            </form>
-        </div>
+
+                <form className="form-container" onSubmit={handleSubmit}>
+                    <div className="form-field">
+                        <label htmlFor="crm" className="form-label">CRM</label>
+                        <input
+                            type="text"
+                            id="crm"
+                            name="crm"
+                            value={formData.crm}
+                            onChange={handleChange}
+                            placeholder="000000/UF"
+                            maxLength={10}
+                            className={`form-input ${showError && !formDataValid.crm ? 'error' : ''}`}
+                        />
+                    </div>
+                    <div className="form-field">
+                        <label htmlFor="specialty" className="form-label">Especialidade</label>
+                        <select
+                            id="specialty"
+                            name="specialty"
+                            value={formData.specialty}
+                            onChange={handleChange}
+                            className={`form-input ${showError && !formDataValid.specialty ? 'error' : ''}`}
+                            style={{ backgroundColor: '#fff' }}
+                        >
+                            <option value="" disabled>Selecione a especialidade</option>
+                            {specialties.map((spec, index) => (
+                                <option key={index} value={spec}>{spec}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <button
+                        type="submit"
+                        className="btn-primary"
+                        style={{ marginTop: '20px' }}
+                    >
+                        Finalizar Cadastro
+                    </button>
+                    <div className="redirect-container">
+                        <p className="page-text">
+                            <Link to='/cadastrar'>Voltar</Link>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            <ErrorModal 
+                isOpen={showError && errors.length > 0} 
+                errors={errors} 
+                onClose={() => setShowError(false)} 
+            />           
+            <SuccessModal 
+                isOpen={showSuccess} 
+                message="Cadastro médico realizado com sucesso!" 
+                onClose={handleSuccessClose} 
+            />
+        </section>
     );
 }
+
 export default RegisterDoctor;
