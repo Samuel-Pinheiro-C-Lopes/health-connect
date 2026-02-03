@@ -4,6 +4,7 @@ import RegisterPatient from '../pages/RegisterPatient';
 import RegisterPerson from '../pages/RegisterPerson';
 import RegisterDoctor from '../pages/RegisterDoctor';
 import ForgotPassword from '../pages/Forgotpassword';
+import AdminManagement from '../pages/AdminManagement';
 
 function AppRoutes() {
   return (
@@ -11,6 +12,7 @@ function AppRoutes() {
         <Routes>
             <Route path="/" element={<Login />} />
             <Route path="esqueci-senha" element={<ForgotPassword />} />
+            <Route path="admin" element={<AdminManagement />} />
             <Route path="cadastrar" element={<RegisterPerson/>}/>
             <Route path="cadastrar-paciente" element={<RegisterPatient/>}/>
             <Route path="cadastrar-medico" element={<RegisterDoctor/>}/>

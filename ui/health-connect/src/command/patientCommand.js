@@ -1,19 +1,31 @@
 import api from "../api/api";
 import { getAuthHeader } from "../utils/httpUtils";
 import { createEntity, updateEntity, deleteEntity, listEntities, getEntity } from "./commonCommand";
+import { API_PATHS } from "../config/constants";
+
+const servicePrefix = API_PATHS.PATIENT_SERVICE;
 const patientEndpoint = "patient";
+
 export async function createPatient(token, patientData) {
-    return createEntity(token, patientEndpoint, patientData);
+    return createEntity(token, servicePrefix, patientEndpoint, patientData);
 }
 export async function updatePatient(token, patientId, patientData) {
-    return updateEntity(token, patientEndpoint, patientId, patientData);
+    return updateEntity(token, servicePrefix, patientEndpoint, patientId, patientData);
 }
-export async function deletePatient(token, patientId) {
-    return deleteEntity(token, patientEndpoint, patientId);
+export async function deletePatient(token, patientId, permanent = false) {
+    try {
+        await api.delete(
+            `${servicePrefix}/${patientEndpoint}/${patientId}${permanent ? "?permanent=true" : ""}`,
+            getAuthHeader(token)
+        );
+        return { success: true, statusCode: 200 };
+    } catch (e) {
+        return { success: false, message: e.message, statusCode: e.response?.status || 500 };
+    }
 }
 export async function listPatients(token) {
-    return listEntities(token, patientEndpoint);
+    return listEntities(token, servicePrefix, patientEndpoint);
 }
 export async function getPatient(token, patientId) {
-    return getEntity(token, patientEndpoint, patientId);
+    return getEntity(token, servicePrefix, patientEndpoint, patientId);
 }
