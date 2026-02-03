@@ -1,14 +1,16 @@
-import  { Routes,BrowserRouter,Route } from 'react-router-dom'
+import { Routes, BrowserRouter, Route } from 'react-router-dom';
 import Login from '../pages/Login';
 import RegisterPatient from '../pages/RegisterPatient';
 import RegisterPerson from '../pages/RegisterPerson';
 import RegisterDoctor from '../pages/RegisterDoctor';
+import ForgotPassword from '../pages/Forgotpassword';
 
-function AppRoutes () {
+function AppRoutes() {
   return (
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<Login />} />
+            <Route path="esqueci-senha" element={<ForgotPassword />} />
             <Route path="cadastrar" element={<RegisterPerson/>}/>
             <Route path="cadastrar-paciente" element={<RegisterPatient/>}/>
             <Route path="cadastrar-medico" element={<RegisterDoctor/>}/>

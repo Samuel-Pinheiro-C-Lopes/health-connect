@@ -1,16 +1,40 @@
 import loginImage from '../../assets/images/login_image.png';
 import "./styles.css";
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { loginAsync } from '../../command/userCommand';
+import { STORAGE_KEYS } from '../../config/constants';
+import ErrorModal from '../../components/ErrorModal';
 
 function Login() { 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+    const [errors, setErrors] = useState([]);
+    const [showErrors, setShowErrors] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-    const handleSubmit = (event) =>{
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("Try login");
+        setLoading(true);
+        setShowErrors(false);
+
+        try {
+            const result = await loginAsync(email, senha);
+            if (!result.success) {
+                setErrors([result.message || 'Erro ao fazer login']);
+                setShowErrors(true);
+                return;
+            }
+            const token = result.data.token;
+            sessionStorage.setItem(STORAGE_KEYS.TOKEN, token);
+            navigate('/cadastrar');
+        } catch (err) {
+            setErrors([err.message || 'Erro desconhecido']);
+            setShowErrors(true);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return(
@@ -41,12 +65,18 @@ function Login() {
                                 onChange={(e) => setSenha(e.target.value)}
                                 className="form-input"/>
                     </div>
-                        <a href="">Esqueci minha senha</a>
+                        <Link to="/esqueci-senha">Esqueci minha senha</Link>
+                    <ErrorModal
+                        isOpen={showErrors && errors.length > 0}
+                        errors={errors}
+                        onClose={() => setShowErrors(false)}
+                    />
                     <button
                         type="submit"
                         className="btn-primary"
+                        disabled={loading}
                     >
-                        Entrar
+                        {loading ? 'Entrando...' : 'Entrar'}
                     </button>
                     <div className="redirect-container">
                         <p className="page-text">Não tem uma conta? <Link to='/cadastrar'>Cadastre-se agora.</Link></p>

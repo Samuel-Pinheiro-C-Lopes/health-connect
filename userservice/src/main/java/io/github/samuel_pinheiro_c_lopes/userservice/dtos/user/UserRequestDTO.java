@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Address;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -17,11 +16,7 @@ public record UserRequestDTO(
         @NotBlank
         @JsonProperty("password")
         String password,
-        @NotNull
-        @Min(1)
         Long doctorId,
-        @NotNull
-        @Min(1)
         Long patientId,
         @NotBlank
         @JsonProperty("name")

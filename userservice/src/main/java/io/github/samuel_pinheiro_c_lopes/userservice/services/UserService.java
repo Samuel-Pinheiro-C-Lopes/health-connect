@@ -1,5 +1,6 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,9 @@ public class UserService {
 	public UserResponseDTO save(final UserRequestDTO userRequest) {
 		final User user = userRequest.toUser();
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		if (user.getRoles() == null) {
+			user.setRoles(new ArrayList<>());
+		}
 		return new UserResponseDTO(this.userRepository.save(user));
 	}
 	
