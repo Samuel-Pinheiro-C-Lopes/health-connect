@@ -28,15 +28,25 @@ function Login() {
             }
             const token = result.data.token;
             sessionStorage.setItem(STORAGE_KEYS.TOKEN, token);
-            const role = result.data.role || result.data.roles?.[0] || result.data.user?.role;
-            if (role && role.length > 0) {
-                sessionStorage.setItem(STORAGE_KEYS.ROLE, role);
+            const roleRaw = result.data.role || result.data.roles?.[0] || result.data.user?.role;
+            const role = Array.isArray(roleRaw) ? roleRaw[0] : roleRaw;
+            if (role != null && String(role).length > 0) {
+                sessionStorage.setItem(STORAGE_KEYS.ROLE, String(role));
             }
-            if(role.includes("ADMIN")) {
-                navigate('/admin/');
+            const r = String(role || "").toUpperCase();
+            if (r.includes("ADMIN")) {
+                navigate("/admin");
                 return;
             }
-            navigate('/opcoes-login');
+            if (r.includes("PATIENT") || r.includes("PACIENTE")) {
+                navigate("/inicio");
+                return;
+            }
+            if (r.includes("DOCTOR") || r.includes("MEDICO")) {
+                navigate("/agenda");
+                return;
+            }
+            navigate("/opcoes-login");
         } catch (err) {
             setErrors([err.message || 'Erro desconhecido']);
             setShowErrors(true);

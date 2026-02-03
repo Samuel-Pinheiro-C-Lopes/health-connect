@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import imageRegisterDoctor from "../../assets/images/image_register_doctor.png";
 import ErrorModal from "../../components/ErrorModal";
 import SuccessModal from "../../components/SuccessModal";
 
 function RegisterDoctor() {
-
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         crm: '',
         specialty: ''
@@ -72,6 +72,7 @@ function RegisterDoctor() {
     const handleSuccessClose = () => {
         setShowSuccess(false);
         setFormData({ crm: '', specialty: '' });
+        navigate('/agenda');
     };
 
     return (

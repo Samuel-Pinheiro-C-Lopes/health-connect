@@ -8,6 +8,8 @@ import AdminManagement from '../pages/AdminManagement';
 import OptionsLogin from '../pages/OptionsLogin';
 import PatientHome from '../pages/PatientHome';
 import PatientAppointments from '../pages/PatientAppointments';
+import DoctorHome from '../pages/DoctorHome';
+import Profile from '../pages/Profile';
 import TokenNonAdminRoute from '../components/TokenNonAdminRoute';
 import ProtectedRoute from '../components/ProtectedRoute';
 
@@ -40,6 +42,22 @@ function AppRoutes() {
               element={
                 <TokenNonAdminRoute>
                   <PatientAppointments />
+                </TokenNonAdminRoute>
+              }
+            />
+            <Route
+              path="agenda"
+              element={
+                <TokenNonAdminRoute>
+                  <DoctorHome />
+                </TokenNonAdminRoute>
+              }
+            />
+            <Route
+              path="perfil"
+              element={
+                <TokenNonAdminRoute>
+                  <Profile />
                 </TokenNonAdminRoute>
               }
             />

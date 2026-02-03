@@ -40,7 +40,7 @@ function OptionsLogin() {
         const token = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
         if (!token) return navigate('/');
         if (hasRole('DOCTOR')) {
-            return navigate('/');
+            return navigate('/agenda');
         }
         return navigate('/cadastrar-medico');
     };

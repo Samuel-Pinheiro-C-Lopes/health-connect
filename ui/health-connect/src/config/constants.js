@@ -56,8 +56,41 @@ export const PATIENT_APPOINTMENTS_LABELS = {
     NENHUM_HISTORICO: "Nenhuma consulta no histórico.",
 };
 
-export const ROLES = { 
+export const ROLES = {
     ADMIN: "ADMIN",
     DOCTOR: "DOCTOR",
     PATIENT: "PATIENT",
-}
+};
+
+export const DOCTOR_HOME_LABELS = {
+    APP_NAME: "Health Connect",
+    MINHA_AGENDA: "Minha Agenda",
+    PACIENTES: "Pacientes",
+    PERFIL: "Perfil",
+    HORARIO_AGENDA: "Horário Agenda",
+    HOJE_CONSULTAS: "Hoje: {count} consultas",
+    DATA: "Data",
+    HORA: "Hora",
+    PACIENTE: "Paciente",
+    STATUS: "Status",
+    NENHUMA_CONSULTA: "Nenhuma consulta agendada.",
+};
+
+export const PROFILE_LABELS = {
+    MEU_PERFIL: "Meu Perfil",
+    PACIENTE_DESDE: "Paciente desde {date}",
+    MEDICO_DESDE: "Médico desde {date}",
+    DADOS_PESSOAIS: "Dados Pessoais",
+    SEGURANCA: "Segurança",
+    NOME_COMPLETO: "Nome Completo",
+    EMAIL: "E-mail",
+    TELEFONE: "Telefone",
+    CEP: "CEP",
+    LOGRADOURO: "Logradouro",
+    COMPLEMENTO: "Complemento",
+    NUMERO: "Número",
+    CIDADE: "Cidade",
+    BAIRRO: "Bairro",
+    ESTADO: "Estado",
+    SALVAR_ALTERACOES: "Salvar Alterações",
+};

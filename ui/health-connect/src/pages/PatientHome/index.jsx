@@ -53,6 +53,11 @@ function PatientHome() {
             navigate("/");
             return;
         }
+        const role = (sessionStorage.getItem(STORAGE_KEYS.ROLE) || "").toUpperCase();
+        if (role.includes("DOCTOR")) {
+            navigate("/agenda", { replace: true });
+            return;
+        }
         setToken(t);
     }, [navigate]);
 

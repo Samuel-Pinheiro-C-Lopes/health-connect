@@ -34,3 +34,15 @@ export async function listAppointmentsByPatientCurrentUser(token) {
         return { success: false, message: e.message };
     }
 }
+
+export async function listAppointmentsByDoctorCurrentUser(token) {
+    try {
+        const response = await api.get(
+            `${appointmentBase}/doctor/currentlyLoggedIn`,
+            getAuthHeader(token)
+        );
+        return { success: true, data: response.data };
+    } catch (e) {
+        return { success: false, message: e.message };
+    }
+}
