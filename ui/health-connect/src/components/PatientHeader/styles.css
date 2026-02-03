@@ -1,0 +1,82 @@
+.patient-header {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.patient-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.patient-header-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.patient-header-logo {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+}
+
+.patient-header-app-name {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: white;
+}
+
+.patient-header-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.patient-header-nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.4rem;
+    text-decoration: none;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.patient-header-nav-link:hover {
+    color: white;
+}
+
+.patient-header-nav-link.active {
+    color: white;
+    font-weight: 600;
+    border-bottom-color: white;
+}
+
+.patient-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.patient-header-perfil {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.patient-header-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}

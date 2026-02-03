@@ -1,0 +1,205 @@
+.patient-appointments-layout {
+    min-height: 100vh;
+    background-color: var(--color-bg-page);
+    display: flex;
+    flex-direction: column;
+}
+
+.patient-appointments-main {
+    flex: 1;
+    padding: 24px 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.patient-appointments-loading {
+    padding: 32px;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 1.4rem;
+}
+
+.patient-appointments-section {
+    margin-bottom: 40px;
+}
+
+.patient-appointments-section:last-child {
+    margin-bottom: 0;
+}
+
+.patient-appointments-section-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin: 0 0 20px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.patient-appointments-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.patient-appointments-card {
+    background: var(--color-bg-surface);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+}
+
+.patient-appointments-card-body {
+    padding: 20px;
+}
+
+.patient-appointments-card-doctor {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin: 0 0 4px 0;
+}
+
+.patient-appointments-card-specialty {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    margin: 0 0 12px 0;
+}
+
+.patient-appointments-card-detail {
+    font-size: 1.2rem;
+    color: var(--color-text-main);
+    margin: 0 0 4px 0;
+}
+
+.patient-appointments-btn-cancel {
+    margin-top: 16px;
+    width: 100%;
+    background-color: #e07a5f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.patient-appointments-btn-cancel:hover {
+    opacity: 0.9;
+}
+
+.patient-appointments-btn-cancel:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.patient-appointments-empty {
+    padding: 20px;
+    color: var(--color-text-muted);
+    font-size: 1.2rem;
+    list-style: none;
+}
+
+.patient-appointments-history-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.patient-appointments-history-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 20px;
+    background: var(--color-bg-surface);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--color-border);
+}
+
+.patient-appointments-history-info {
+    min-width: 0;
+}
+
+.patient-appointments-history-doctor {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin: 0 0 2px 0;
+}
+
+.patient-appointments-history-specialty {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.patient-appointments-history-meta {
+    display: flex;
+    align-items: center;
+}
+
+.patient-appointments-history-datetime {
+    font-size: 1.2rem;
+    color: var(--color-text-main);
+}
+
+.patient-appointments-history-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.patient-appointments-history-check {
+    color: var(--color-success);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.patient-appointments-history-badge {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.patient-appointments-history-badge.concluida {
+    color: var(--color-success);
+}
+
+.patient-appointments-history-badge.cancelada {
+    color: var(--color-text-muted);
+}
+
+.patient-appointments-btn-details {
+    background-color: var(--color-border);
+    color: var(--color-text-main);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.patient-appointments-btn-details:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .patient-appointments-history-item {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .patient-appointments-cards {
+        grid-template-columns: 1fr;
+    }
+}

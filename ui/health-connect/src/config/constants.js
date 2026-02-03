@@ -42,3 +42,16 @@ export const PATIENT_HOME_LABELS = {
     AMANHA: "Amanhã",
     NENHUMA_CONSULTA: "Você não possui consultas agendadas.",
 };
+
+export const PATIENT_APPOINTMENTS_LABELS = {
+    CONSULTAS_AGENDADAS: "Consultas Agendadas",
+    HISTORICO_CONSULTAS: "Histórico de Consultas",
+    HORARIO: "Horário",
+    DATA_MARCADA: "Data de marcação",
+    CANCELAR_CONSULTA: "Cancelar Consulta",
+    VER_DETALHES: "Ver Detalhes",
+    CONCLUIDA: "Concluída",
+    CANCELADA: "Cancelada",
+    NENHUMA_AGENDADA: "Nenhuma consulta agendada.",
+    NENHUM_HISTORICO: "Nenhuma consulta no histórico.",
+};

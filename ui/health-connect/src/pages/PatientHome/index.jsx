@@ -8,6 +8,7 @@ import { listAppointmentsByPatientCurrentUser } from "../../query/appointmentQue
 import { getCurrentUser } from "../../query/userQuery";
 import { createAppointment, cancelAppointment } from "../../command/appointmentCommand";
 import DoctorCard from "../../components/DoctorCard";
+import PatientHeader from "../../components/PatientHeader";
 import ErrorModal from "../../components/ErrorModal";
 import SuccessModal from "../../components/SuccessModal";
 import "./styles.css";
@@ -185,26 +186,7 @@ function PatientHome() {
 
     return (
         <div className="patient-home-layout">
-            <header className="patient-home-header">
-                <div className="patient-home-header-left">
-                    <img src="/health_connect_logo.png" alt="" className="patient-home-logo" />
-                    <span className="patient-home-app-name">{PATIENT_HOME_LABELS.APP_NAME}</span>
-                </div>
-                <nav className="patient-home-nav">
-                    <span className="patient-home-nav-link active">{PATIENT_HOME_LABELS.INICIO}</span>
-                    <button
-                        type="button"
-                        className="patient-home-nav-link"
-                        onClick={() => {}}
-                    >
-                        {PATIENT_HOME_LABELS.MINHAS_CONSULTAS}
-                    </button>
-                </nav>
-                <div className="patient-home-header-right">
-                    <span className="patient-home-perfil">{PATIENT_HOME_LABELS.PERFIL}</span>
-                    <span className="patient-home-avatar">👤</span>
-                </div>
-            </header>
+            <PatientHeader activePage="inicio" />
 
             <div className="patient-home-banner">
                 <div className="patient-home-search-wrap">

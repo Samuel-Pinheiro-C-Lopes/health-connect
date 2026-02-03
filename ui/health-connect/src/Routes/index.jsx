@@ -7,6 +7,7 @@ import ForgotPassword from '../pages/Forgotpassword';
 import AdminManagement from '../pages/AdminManagement';
 import OptionsLogin from '../pages/OptionsLogin';
 import PatientHome from '../pages/PatientHome';
+import PatientAppointments from '../pages/PatientAppointments';
 import TokenNonAdminRoute from '../components/TokenNonAdminRoute';
 
 function AppRoutes() {
@@ -23,6 +24,14 @@ function AppRoutes() {
               element={
                 <TokenNonAdminRoute>
                   <PatientHome />
+                </TokenNonAdminRoute>
+              }
+            />
+            <Route
+              path="minhas-consultas"
+              element={
+                <TokenNonAdminRoute>
+                  <PatientAppointments />
                 </TokenNonAdminRoute>
               }
             />
