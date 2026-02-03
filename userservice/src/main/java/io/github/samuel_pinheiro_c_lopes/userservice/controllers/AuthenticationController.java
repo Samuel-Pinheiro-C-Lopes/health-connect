@@ -1,5 +1,7 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.controllers;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,14 +33,14 @@ public class AuthenticationController {
 			
 			try {
 				var authorization = authenticationManager.authenticate(authenticationToken);
-				
-				var jwtToken = this.jwtokenService.getToken((User)authorization.getPrincipal());
-				return ResponseEntity.ok(new JWTResponseDTO(jwtToken));			
+				var user = (User)authorization.getPrincipal();
+				var jwtToken = this.jwtokenService.getToken(user);
+				return ResponseEntity.ok(new JWTResponseDTO(jwtToken, user.getRoles().stream().map(r -> r.getAuthority()).toList()));			
 			} catch (Exception ex) {
 				throw ex;
 			}
 	}
 	
 	private record AuthenticationRequestDTO(String username, String password) { }
-	private record JWTResponseDTO(String token) { }
+	private record JWTResponseDTO(String token, List<String> roles) { }
 }

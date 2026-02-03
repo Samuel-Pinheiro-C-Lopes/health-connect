@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import io.github.samuel_pinheiro_c_lopes.appointmentservice.repositories.Appoint
 import io.github.samuel_pinheiro_c_lopes.spring_common.appointment.enums.AppointmentStatus;
 import io.github.samuel_pinheiro_c_lopes.spring_common.doctor.clients.DoctorClient;
 import io.github.samuel_pinheiro_c_lopes.spring_common.doctor.dtos.CommonDoctorResponseDTO;
+import io.github.samuel_pinheiro_c_lopes.spring_common.email.dtos.CommonMailDTO;
 import io.github.samuel_pinheiro_c_lopes.spring_common.patient.clients.PatientClient;
 import io.github.samuel_pinheiro_c_lopes.spring_common.patient.dtos.CommonPatientResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.spring_common.user.clients.UserClient;
@@ -30,13 +32,21 @@ public class AppointmentService {
 	private final UserClient personClient;
 	private final DoctorClient doctorClient;
 	private final PatientClient patientClient;
+	private final RabbitTemplate rabbitTemplate;
 
 	@Autowired
-	public AppointmentService(final AppointmentRepository appointmentRepository, final UserClient personClient, final DoctorClient doctorClient, final PatientClient patientClient) {
+	public AppointmentService(
+			final AppointmentRepository appointmentRepository, 
+			final UserClient personClient, 
+			final DoctorClient doctorClient, 
+			final PatientClient patientClient,
+			final RabbitTemplate rabbitTemplate
+	) {
 		this.appointmentRepository = appointmentRepository;
 		this.personClient = personClient;
 		this.doctorClient = doctorClient;
 		this.patientClient = patientClient;
+		this.rabbitTemplate = rabbitTemplate;	
 	}
 	
 	// --- VALIDAÇÕES ---
@@ -124,9 +134,29 @@ public class AppointmentService {
         final Appointment appointment = userRequest.toAppointment();
         
         this.verifyAndFillAppointment(appointment, null);
+        this.sendAppointmentMadeToDoctor(appointment);
         
         return new AppointmentResponseDTO(this.appointmentRepository.save(appointment));
     }
+	
+	private void sendAppointmentMadeToDoctor(final Appointment appointment) {
+        final CommonUserResponseDTO doctorUser = this.personClient.findByDoctorId(appointment.getDoctorId());
+		final CommonUserResponseDTO patientUser = this.personClient.findByPatientId(appointment.getPatientId());
+        
+		rabbitTemplate.convertAndSend("email.notification", new EmailDto(
+            	"healthconnectpweb@gmail.com",
+            	doctorUser.email(),
+            	"Consulta Marcada!",
+            	"Dr(a). " + doctorUser.name() + ", sua consulta com " + patientUser.name() + " foi marcada para " + appointment.getDateTime() + "." 
+		));
+	}
+	
+	private record EmailDto(
+			String mailFrom, 
+			String mailTo,
+			String mailSubject, 
+			String mailBody
+	) implements CommonMailDTO { }
     
     public AppointmentResponseDTO update(final Long id, final AppointmentRequestDTO appointmentRequest) {
         final Appointment existingAppointment = this.appointmentRepository.findById(id)

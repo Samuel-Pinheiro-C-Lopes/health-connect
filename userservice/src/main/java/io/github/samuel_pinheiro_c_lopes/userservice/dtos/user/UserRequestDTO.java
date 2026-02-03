@@ -1,6 +1,7 @@
 package io.github.samuel_pinheiro_c_lopes.userservice.dtos.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.github.samuel_pinheiro_c_lopes.userservice.models.Address;
 import io.github.samuel_pinheiro_c_lopes.userservice.models.User;
 import jakarta.validation.constraints.Email;

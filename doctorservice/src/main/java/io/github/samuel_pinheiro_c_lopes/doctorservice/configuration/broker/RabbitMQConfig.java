@@ -9,9 +9,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
+	public static final String QUEUE_NAME = "email.notification";
+	
     @Bean
-    public Queue queue(@Value("${app.broker.queue.person.bind}") final String queueName) {
-        return new Queue(queueName, true);
+    public Queue queue() {
+        return new Queue(QUEUE_NAME, true);
     }
 
     @Bean

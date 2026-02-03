@@ -2,6 +2,7 @@ package io.github.samuel_pinheiro_c_lopes.patientservice.services;
 
 import java.util.List;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientRequestDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.dtos.PatientResponseDTO;
 import io.github.samuel_pinheiro_c_lopes.patientservice.models.Patient;
 import io.github.samuel_pinheiro_c_lopes.patientservice.repositories.PatientRepository;
+import io.github.samuel_pinheiro_c_lopes.spring_common.email.dtos.CommonMailDTO;
 import io.github.samuel_pinheiro_c_lopes.spring_common.general.enums.AccountStatus;
 import io.github.samuel_pinheiro_c_lopes.spring_common.user.clients.UserClient;
 import io.github.samuel_pinheiro_c_lopes.spring_common.user.dtos.CommonUserBindRequestDTO;
@@ -21,11 +23,17 @@ import jakarta.persistence.EntityNotFoundException;
 public class PatientService {
 	private final PatientRepository patientRepository;
 	private final UserClient userClient;
+	private final RabbitTemplate rabbitTemplate;
 
 	@Autowired
-	public PatientService(final PatientRepository patientRepository, final UserClient userClient) {
+	public PatientService(
+			final PatientRepository patientRepository, 
+			final UserClient userClient,
+			final RabbitTemplate rabbitTemplate
+	) {
 		this.patientRepository = patientRepository;
 		this.userClient = userClient;
+		this.rabbitTemplate = rabbitTemplate;
 	}
 
 	public PatientFullResponseDTO getFullResponseFrom(final Patient patient) {
@@ -66,12 +74,38 @@ public class PatientService {
 	}
 	
 	public PatientResponseDTO save(final PatientRequestDTO userRequest) {
-		final Patient savedPatient = this.patientRepository.save(userRequest.toPatient());
+		final Patient toSavePatient = userRequest.toPatient();
+		
+		toSavePatient.setAccountStatus(AccountStatus.ACTIVE);
+		
+		final Patient savedPatient = this.patientRepository.save(toSavePatient);
 		
 		this.userClient.patch(userRequest.personId(), new PersonBindPatchDTO(savedPatient.getId(), null));
 		
+		this.sendAccountUpdateTo(savedPatient);
+		
 		return new PatientResponseDTO(savedPatient);
 	}
+	
+	private void sendAccountUpdateTo(final Patient patient) {
+        final CommonUserResponseDTO patientUser = this.userClient.findByDoctorId(patient.getId());
+        
+		rabbitTemplate.convertAndSend("email.notification", new EmailDto(
+            	"healthconnectpweb@gmail.com",
+            	patientUser.email(),
+            	"Status da conta alterada!",
+            	"Sr(a). " + patientUser.name() + 
+            	", sua conta teve seu estado alterado!\n Estado atual:: " + 
+            		patient.getAccountStatus().getMessage()
+		));
+	}
+	
+	private record EmailDto(
+			String mailFrom, 
+			String mailTo,
+			String mailSubject, 
+			String mailBody
+	) implements CommonMailDTO { }
 	
 	public PatientResponseDTO update(final Long id, final PatientRequestDTO userRequest) {
 		final Patient toBeUpdatedPatient = this.patientRepository.getReferenceById(id);
@@ -97,6 +131,7 @@ public class PatientService {
 		
 		this.patientRepository.save(patient);
 		
+		this.sendAccountUpdateTo(patient);
 	}
 	
 	

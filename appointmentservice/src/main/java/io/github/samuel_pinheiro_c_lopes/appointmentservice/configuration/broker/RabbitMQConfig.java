@@ -7,11 +7,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
+
 @Configuration
 public class RabbitMQConfig {
+	public static final String QUEUE_NAME = "email.notification";
+
     @Bean
-    public Queue queue(@Value("${app.broker.queue.appointment.bind}") String queueName) {
-        return new Queue(queueName, true);
+    public Queue emailQueue() {
+        return new Queue(QUEUE_NAME, true);
     }
 
     @Bean
