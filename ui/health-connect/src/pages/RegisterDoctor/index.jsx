@@ -70,20 +70,27 @@ function RegisterDoctor() {
             setShowError(true);
         }
 
-        
-        const token = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
-        const formData = {
-            personId: sessionStorage.getItem(STORAGE_KEYS.PERSON_ID),
-            crm: formData.crm,
-            specialty: formData.specialty
-        };
-        const response = await createDoctor(token, formData);
-        if (!response.success) {
-            setErrors([response.message || "Erro ao registrar médico."]);
+        try{
+            const token = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
+            const request = {
+                personId: sessionStorage.getItem(STORAGE_KEYS.PERSON_ID),
+                crm: formData.crm,
+                specialty: formData.specialty
+            };
+            const response = await createDoctor(token, request);
+            if (!response.success) {
+                setErrors([response.message || "Erro ao registrar médico."]);
+                setShowError(true);
+                setShowSuccess(false);
+                return;
+            }
+        }catch(err){
+            setErrors([err.message || "Erro desconhecido."]);
             setShowError(true);
             setShowSuccess(false);
             return;
         }
+        
 
         setShowSuccess(true);    
     };
