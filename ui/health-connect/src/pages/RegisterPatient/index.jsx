@@ -103,7 +103,7 @@ function RegisterPatient(){
 
     const handleSuccessClose = () => {
         setShowSuccess(false);
-        navigate('/inicio');
+        navigate('/home-paciente');
     }
 
     return(

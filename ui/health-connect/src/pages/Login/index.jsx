@@ -42,14 +42,7 @@ function Login() {
                 navigate("/admin");
                 return;
             }
-            if (r.includes("PATIENT") || r.includes("PACIENTE")) {
-                navigate("/inicio");
-                return;
-            }
-            if (r.includes("DOCTOR") || r.includes("MEDICO")) {
-                navigate("/agenda");
-                return;
-            }
+
             navigate("/opcoes-login");
         } catch (err) {
             setErrors([err.message || 'Erro desconhecido']);

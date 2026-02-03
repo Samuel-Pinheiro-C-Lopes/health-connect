@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import imageRegisterDoctor from "../../assets/images/image_register_doctor.png";
 import ErrorModal from "../../components/ErrorModal";
 import SuccessModal from "../../components/SuccessModal";
+import { createDoctor } from "../../command/doctorCommand";
 
 function RegisterDoctor() {
     const navigate = useNavigate();
@@ -55,7 +56,7 @@ function RegisterDoctor() {
         return newErrors.length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
         const isValid = validateForm();
@@ -67,12 +68,29 @@ function RegisterDoctor() {
         } else {
             setShowError(true);
         }
+
+        
+        const token = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
+        const formData = {
+            personId: sessionStorage.getItem(STORAGE_KEYS.PERSON_ID),
+            crm: formData.crm,
+            specialty: formData.specialty
+        };
+        const response = await createDoctor(token, formData);
+        if (!response.success) {
+            setErrors([response.message || "Erro ao registrar médico."]);
+            setShowError(true);
+            setShowSuccess(false);
+            return;
+        }
+
+        setShowSuccess(true);    
     };
 
     const handleSuccessClose = () => {
         setShowSuccess(false);
         setFormData({ crm: '', specialty: '' });
-        navigate('/agenda');
+        navigate('/home-doctor');
     };
 
     return (
