@@ -74,7 +74,7 @@ function RegisterPatient(){
                         Criar Conta
                     </button>
                     <div className="redirect-container">
-                        <p className="page-text">Já tem uma conta? <Link to='/'>Faça login</Link></p>
+                        <p className="page-text"><Link to='/cadastrar'>Voltar</Link></p>
                     </div>
                 </form>   
             </div>
