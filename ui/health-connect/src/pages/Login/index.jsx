@@ -1,6 +1,6 @@
 import loginImage from '../../assets/images/login_image.png';
 import "./styles.css";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginAsync } from '../../command/userCommand';
 import { STORAGE_KEYS } from '../../config/constants';
@@ -13,7 +13,11 @@ function Login() {
     const [showErrors, setShowErrors] = useState(false);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
+    const resetPage = useEffect(() => {
+        sessionStorage.removeItem(STORAGE_KEYS.TOKEN);
+        sessionStorage.removeItem(STORAGE_KEYS.ROLE);
+    }, []);
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);

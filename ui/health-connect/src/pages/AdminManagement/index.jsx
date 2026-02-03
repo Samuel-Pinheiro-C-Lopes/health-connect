@@ -5,14 +5,17 @@ import DashboardCard from "../../components/DashboardCard";
 import ErrorModal from "../../components/ErrorModal";
 import { getSpecialtyLabel } from "../../utils/specialtyLabels";
 import {
-    listDoctorsActiveFull,
-    listDoctorsActive,
-    listDoctorsPending,
     approveDoctor,
     rejectDoctor,
     deleteDoctor,
 } from "../../command/doctorCommand";
-import { listPatients, deletePatient } from "../../command/patientCommand";
+import {
+    listDoctorsActiveFull,
+    listDoctorsActive,
+    listDoctorsPending,
+} from "../../query/doctorQuery";
+import { listPatients } from "../../query/patientQuery";
+import { deletePatient } from "../../command/patientCommand";
 import { listAppointments } from "../../query/appointmentQuery";
 import "./styles.css";
 

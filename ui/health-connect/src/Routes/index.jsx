@@ -27,6 +27,22 @@ function AppRoutes() {
                 </ProtectedRoute>
               }
             />
+             <Route
+              path="home-paciente"
+              element={
+                <ProtectedRoute allowedRoles={["PATIENT"]}>
+                  <PatientHome />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="home-medico"
+              element={
+                <ProtectedRoute allowedRoles={["DOCTOR"]}>
+                  <DoctorHome />
+                </ProtectedRoute>
+              }
+            />
             <Route path="cadastrar" element={<RegisterPerson/>}/>
             <Route path="opcoes-login" element={<OptionsLogin/>} />
             <Route

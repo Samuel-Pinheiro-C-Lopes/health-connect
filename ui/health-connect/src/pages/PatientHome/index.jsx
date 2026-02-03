@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { STORAGE_KEYS, PATIENT_HOME_LABELS } from "../../config/constants";
 import { getSpecialtyLabel } from "../../utils/specialtyLabels";
 import { SPECIALTY_LABELS } from "../../utils/specialtyLabels";
-import { listDoctorsActiveFull } from "../../command/doctorCommand";
+import { listDoctorsActiveFull } from "../../query/doctorQuery";
 import { listAppointmentsByPatientCurrentUser } from "../../query/appointmentQuery";
 import { getCurrentUser } from "../../query/userQuery";
 import { createAppointment, cancelAppointment } from "../../command/appointmentCommand";

@@ -30,6 +30,24 @@ export async function listDoctorsFull(token) {
     }
 }
 
+export async function listDoctorsActive(token) {
+    try {
+        const response = await api.get(`${doctorBase}/active`, getAuthHeader(token));
+        return { success: true, data: response.data };
+    } catch (e) {
+        return { success: false, message: e.message };
+    }
+}
+
+export async function listDoctorsActiveFull(token) {
+    try {
+        const response = await api.get(`${doctorBase}/active/full`, getAuthHeader(token));
+        return { success: true, data: response.data };
+    } catch (e) {
+        return { success: false, message: e.message };
+    }
+}
+
 export async function listDoctorsPending(token) {
     try {
         const response = await api.get(`${doctorBase}/pending`, getAuthHeader(token));
@@ -37,4 +55,4 @@ export async function listDoctorsPending(token) {
     } catch (e) {
         return { success: false, message: e.message };
     }
-}
+} 

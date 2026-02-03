@@ -1,6 +1,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { STORAGE_KEYS } from '../../config/constants';
+import { Link } from 'react-router-dom';
 
 function OptionsLogin() {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ function OptionsLogin() {
         const token = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
         if (!token) return navigate('/');
         if (hasRole('PATIENT')) {
-            return navigate('/inicio');
+            return navigate('/home-paciente');
         }
         return navigate('/cadastrar-paciente');
     };
@@ -40,7 +41,7 @@ function OptionsLogin() {
         const token = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
         if (!token) return navigate('/');
         if (hasRole('DOCTOR')) {
-            return navigate('/agenda');
+            return navigate('/home-medico');
         }
         return navigate('/cadastrar-medico');
     };
@@ -58,6 +59,7 @@ function OptionsLogin() {
                     <button className="btn-primary" onClick={handlePatient}>Entrar como Paciente</button>
                     <button className="btn-primary" onClick={handleDoctor}>Entrar como Médico</button>
                 </div>
+                <Link to="/">Voltar</Link>
             </div>
         </section>
     );

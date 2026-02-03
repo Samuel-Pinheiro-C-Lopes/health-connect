@@ -23,9 +23,4 @@ export async function deletePatient(token, patientId, permanent = false) {
         return { success: false, message: e.message, statusCode: e.response?.status || 500 };
     }
 }
-export async function listPatients(token) {
-    return listEntities(token, servicePrefix, patientEndpoint);
-}
-export async function getPatient(token, patientId) {
-    return getEntity(token, servicePrefix, patientEndpoint, patientId);
-}
+

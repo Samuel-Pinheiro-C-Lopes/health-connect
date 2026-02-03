@@ -23,53 +23,6 @@ export async function deleteDoctor(token, doctorId, permanent = false) {
         return { success: false, message: e.message, statusCode: e.response?.status || 500 };
     }
 }
-export async function listDoctors(token) {
-    return listEntities(token, servicePrefix, doctorEndpoint);
-}
-export async function listDoctorsActive(token) {
-    try {
-        const response = await api.get(
-            `${servicePrefix}/${doctorEndpoint}/active`,
-            getAuthHeader(token)
-        );
-        return { success: true, data: response.data };
-    } catch (e) {
-        return { success: false, message: e.message };
-    }
-}
-export async function listDoctorsActiveFull(token) {
-    try {
-        const response = await api.get(
-            `${servicePrefix}/${doctorEndpoint}/active/full`,
-            getAuthHeader(token)
-        );
-        return { success: true, data: response.data };
-    } catch (e) {
-        return { success: false, message: e.message };
-    }
-}
-export async function listDoctorsFull(token) {
-    try {
-        const response = await api.get(
-            `${servicePrefix}/${doctorEndpoint}/full`,
-            getAuthHeader(token)
-        );
-        return { success: true, data: response.data };
-    } catch (e) {
-        return { success: false, message: e.message };
-    }
-}
-export async function listDoctorsPending(token) {
-    try {
-        const response = await api.get(
-            `${servicePrefix}/${doctorEndpoint}/pending`,
-            getAuthHeader(token)
-        );
-        return { success: true, data: response.data };
-    } catch (e) {
-        return { success: false, message: e.message };
-    }
-}
 export async function approveDoctor(token, doctorId) {
     try {
         await api.patch(
@@ -93,7 +46,4 @@ export async function rejectDoctor(token, doctorId) {
     } catch (e) {
         return { success: false, message: e.message, statusCode: e.response?.status || 500 };
     }
-}
-export async function getDoctor(token, doctorId) {
-    return getEntity(token, servicePrefix, doctorEndpoint, doctorId);
-}
+} 

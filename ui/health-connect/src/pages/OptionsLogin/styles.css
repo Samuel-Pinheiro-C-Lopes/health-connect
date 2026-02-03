@@ -1,0 +1,69 @@
+/* OptionsLogin — centralizado, mantendo tamanhos grandes como antes */
+.page-split-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+/* Força centralização e evita sobrescrita por regras globais */
+.page-split-container > .page-split-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 24px;
+  width: 100% !important;
+  max-width: 720px;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 0 auto;
+  min-height: 40vh;
+}
+
+.page-split-container > .page-split-content img {
+  width: 220px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto 12px;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Restaurando tipografia grande (como no arquivo global) */
+.page-split-content-text .page-title {
+  font-size: 2.5rem; /* padrão original */
+  margin: 0;
+}
+
+.page-split-content-text .page-text {
+  font-size: 1.4rem; /* padrão original */
+  margin: 0;
+  color: var(--color-text-main);
+}
+
+/* Formulário e botões grandes */
+.form-container {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.form-container .btn-primary {
+  width: 100%;
+  height: 66px;
+  min-height: 66px;
+  font-size: 2rem;
+  border-radius: 8px;
+  margin: 8px 0;
+  padding: 0;
+}
